@@ -1,5 +1,8 @@
 package UDP;
 
-public class UDPPacketReceiver {
+import Util.ClientHolder;
+import Util.PacketReceiver;
+
+public abstract class UDPPacketReceiver extends PacketReceiver<Message>{
 
 }
