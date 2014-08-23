@@ -1,13 +1,13 @@
 package Util;
 
-public abstract class PacketReceiver<e> {
+public abstract class PacketReceiver<E> {
 	private final Object lock = new Object();
 	
-	public final void notifyPacketReceived(e packet, ClientHolder<e> fromClient) {
+	public final void notifyPacketReceived(E packet, ClientHolder<E> fromClient) {
 	    synchronized(lock) {
 	        packetReceived(packet, fromClient);
 	    }
 	}
 	
-	protected abstract void packetReceived(e packet, ClientHolder<e> fromClient);
+	protected abstract void packetReceived(E packet, ClientHolder<E> fromClient);
 }

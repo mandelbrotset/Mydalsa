@@ -41,6 +41,7 @@ class TCPClientHolder extends ClientHolder<Object> {
 	@Override
 	protected void receivePacket() throws ClassNotFoundException, IOException {
 		Object receivedObjcet = inputStream.readObject();
+		
 		packetReceiver.notifyPacketReceived(receivedObjcet, this);
 	}
 	
