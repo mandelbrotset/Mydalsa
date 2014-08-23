@@ -6,7 +6,6 @@ public abstract class ClientHolder<e> extends Thread {
 	protected String clientName;
 	protected PacketReceiver<e> packetReceiver;
 	
-	
 	public String getClientName() {
 		return clientName;
 	}

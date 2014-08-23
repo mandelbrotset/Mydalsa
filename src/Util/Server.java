@@ -30,8 +30,4 @@ public abstract class Server<e> extends Thread {
 		super.run();
 	}
 	
-	private void checkConnections() {
-		
-	}
-	
 }
