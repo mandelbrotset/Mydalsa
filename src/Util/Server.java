@@ -1,8 +1,10 @@
 package Util;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 
-public abstract class Server<e> extends Thread {
+public class Server<e> extends Thread {
 	
 	protected PacketReceiver<e> packetReceiver;
 	protected PacketSender packetSender;
@@ -10,6 +12,8 @@ public abstract class Server<e> extends Thread {
 	protected Terminal terminal;
 	protected int port;
 	protected ArrayList<ClientHolder<e>> clients;
+	private DatagramSocket pingSocket;
+	private ServerSocket tcpSocket;
 	
 	public Server(PacketReceiver<e> packetReceiver, int port) {
 		this.packetReceiver = packetReceiver;
@@ -21,13 +25,5 @@ public abstract class Server<e> extends Thread {
 	public abstract boolean startServer() throws IOException;
 	
 	public abstract boolean stopServer() throws IOException;
-	
-	@Override
-	public void run() {
-		while (!interrupted()) {
-			
-		}
-		super.run();
-	}
 	
 }

@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import Util.Client;
 
-
 public abstract class TCPClient extends Client<Object> {
 	private Socket socket;
 	private ObjectInputStream inputStream;
