@@ -6,7 +6,7 @@ import java.net.*;
 
 import Util.ClientHolder;
 
-public class TCPClientHolder extends ClientHolder<Object> {
+class TCPClientHolder extends ClientHolder<Object> {
 
 	private Socket socket;
 	private ObjectOutputStream outputStream;
