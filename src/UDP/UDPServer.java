@@ -3,11 +3,11 @@ import java.net.*;
 import Util.PacketReceiver;
 import Util.Server;
 
-public class UDPServer extends Server {
+public class UDPServer extends Server<Message> {
 
 	private DatagramSocket socket;
 	
-	public UDPServer(PacketReceiver packetReceiver, int port) {
+	public UDPServer(PacketReceiver<Message> packetReceiver, int port) {
 		super(packetReceiver, port);
 		setName(this.getClass().getName());
 	}
