@@ -2,8 +2,11 @@ package tcp.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
+import Logging.LogLevel;
+import Logging.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tcp.TCPObjectReceiver;
 import util.Terminal;
@@ -19,35 +22,42 @@ public class TCPServer extends Server {
 	private ArrayList<TCPClientHolder> clients;
 	private ServerSocket socket;
 	private boolean isRunning;
+	private String serverName;
 	
-	public TCPServer(TCPObjectReceiver objectReceiver, int port) {
-		this.objectReceiver = objectReceiver;
-		terminal = new Terminal();
-		this.port = port;
-		clients = new ArrayList<TCPClientHolder>();
+	public TCPServer(TCPObjectReceiver objectReceiver, int port, String serverName) {
+		this.serverName = serverName;
+		setName("TCPServer_" + serverName);
 		isRunning = false;
+		this.objectReceiver = objectReceiver;
+		this.port = port;
+		terminal = new Terminal();
+		clients = new ArrayList<TCPClientHolder>();
 	}
 	
 	public boolean startServer() {
 		try {
 			socket = new ServerSocket(port);
 			this.start();
+			logInfo("Server started");
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
-		}		
+		}
 	}
 	
 	public boolean stopServer() {
 		isRunning = false;
 		try {
+			socket.close();
 			this.join();
+			logInfo("Server stopped");
 			return true;
-		} catch (InterruptedException e) {
+		} catch (InterruptedException | IOException e) {
+			logError("Error when stopping server: " + e.getMessage());
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 	
 	@Override
@@ -57,10 +67,14 @@ public class TCPServer extends Server {
 		while (!interrupted() && isRunning) {
 			try {
 				TCPClientHolder ch = new TCPClientHolder(socket.accept(), objectReceiver);
+				logInfo("New client connected: " + ch.toString());
 				synchronized (clients) {
 					clients.add(ch);
 				}
+			} catch (SocketException se) {
+				logInfo("Socket closed");
 			} catch (IOException e1) {
+				logError(e1.getMessage());
 				e1.printStackTrace();
 			}
 			try {
@@ -75,4 +89,11 @@ public class TCPServer extends Server {
 		throw new NotImplementedException();
 	}
 	
+	private void logInfo(String message) {
+		Logger.getInstance().write(LogLevel.info, message, getName());
+	}
+	
+	private void logError(String message) {
+		Logger.getInstance().write(LogLevel.error, message, getName());
+	}
 }
