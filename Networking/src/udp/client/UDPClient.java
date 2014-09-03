@@ -1,10 +1,12 @@
-package UDP;
+package udp.client;
 
-import Util.Client;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import udp.Message;
+import util.client.Client;
 
 public abstract class UDPClient extends Client<Message> {
 	private DatagramSocket socket;

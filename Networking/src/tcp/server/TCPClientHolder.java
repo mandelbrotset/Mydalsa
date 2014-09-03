@@ -1,11 +1,12 @@
-package TCP;
+package tcp.server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import Util.ClientHolder;
-import Util.PacketReceiver;
+
+import util.PacketReceiver;
+import util.server.ClientHolder;
 
 public class TCPClientHolder extends ClientHolder<Object> {
 	private static final int SLEEP = 1;

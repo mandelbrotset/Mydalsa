@@ -1,4 +1,4 @@
-package TCP;
+package tcp.client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -6,7 +6,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import Util.Client;
+import util.client.Client;
 
 public abstract class TCPClient extends Client<Object> {
 	private Socket socket;

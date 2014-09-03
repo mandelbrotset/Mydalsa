@@ -1,5 +1,5 @@
-package UDP;
-import Util.PacketReceiver;
+package udp;
+import util.PacketReceiver;
 
 public abstract class UDPPacketReceiver extends PacketReceiver<Message> {
 

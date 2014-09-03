@@ -1,9 +1,11 @@
-package UDP;
+package udp.server;
 
 import java.net.*;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import Util.PacketReceiver;
-import Util.Server;
+import udp.Message;
+import util.PacketReceiver;
+import util.server.Server;
 
 public class UDPServer extends Server {
 

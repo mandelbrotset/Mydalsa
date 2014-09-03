@@ -1,4 +1,4 @@
-package Util;
+package util.server;
 
 public abstract class Server extends Thread {
 	

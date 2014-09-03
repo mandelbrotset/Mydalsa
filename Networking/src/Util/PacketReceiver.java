@@ -1,4 +1,6 @@
-package Util;
+package util;
+
+import util.server.ClientHolder;
 
 public abstract class PacketReceiver<E> {
 	private final Object lock = new Object();

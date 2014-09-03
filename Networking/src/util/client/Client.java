@@ -1,4 +1,4 @@
-package Util;
+package util.client;
 import java.io.IOException;
 import java.net.InetAddress;
 
