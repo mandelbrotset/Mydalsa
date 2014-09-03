@@ -8,6 +8,7 @@ public class PingResponder extends Thread {
 	private DatagramSocket socket;
 	
 	public PingResponder(DatagramSocket socket) {
+		setName("PingResponder");
 		this.socket = socket;
 	}
 
@@ -19,15 +20,15 @@ public class PingResponder extends Thread {
 			try {
 				socket.receive(p);
 				byte[] respondBuf = new byte[1];
+				respondBuf[0] = 1;
 				DatagramPacket rP = new DatagramPacket(respondBuf, respondBuf.length);
 				rP.setAddress(p.getAddress());
 				rP.setPort(p.getPort());
 				socket.send(rP);
 			} catch (IOException e) {
 				try {
-					Thread.sleep(10);
+					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				e.printStackTrace();
@@ -35,6 +36,4 @@ public class PingResponder extends Thread {
 		}
 		super.run();
 	}
-	
-	
 }

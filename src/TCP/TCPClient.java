@@ -4,6 +4,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import Util.Client;
 
 public abstract class TCPClient extends Client<Object> {
@@ -33,6 +35,11 @@ public abstract class TCPClient extends Client<Object> {
 	
 	private void createOutputStream() throws IOException {
 		outputStream = new ObjectOutputStream(socket.getOutputStream());
+	}
+	
+	private boolean pingServer() {
+		// one byte to the PingResponder and wait for reply
+		throw new NotImplementedException();
 	}
 	
 	@Override

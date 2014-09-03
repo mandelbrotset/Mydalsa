@@ -1,45 +1,68 @@
 package TCP;
-import java.io.IOException;
-import java.net.*;
-import Util.Server;
 
-public class TCPServer extends Server<Object> {
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import TCP.TCPClientHolder;
+import TCP.TCPObjectReceiver;
+import Util.Server;
+import Util.ServerListHandler;
+import Util.Terminal;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+public class TCPServer extends Server {
+	private final static int SLEEP = 1;
+	private TCPObjectReceiver objectReceiver;
+	private ServerListHandler serverListHandler;
+	private Terminal terminal;
+	private int port;
+	private ArrayList<TCPClientHolder> clients;
 	private ServerSocket socket;
 	
-	public TCPServer(TCPPacketReceiver packetReceiver, int port) {
-		super(packetReceiver, port);
-		setName(this.getClass().getName());
+	public TCPServer(TCPObjectReceiver objectReceiver, int port) {
+		this.objectReceiver = objectReceiver;
+		terminal = new Terminal();
+		this.port = port;
+		clients = new ArrayList<TCPClientHolder>();
 	}
-
-	@Override
-	public boolean startServer() throws IOException {
-		socket = new ServerSocket(port);
-		start();
-		return true;
+	
+	public boolean startServer() {
+		try {
+			socket = new ServerSocket(port);
+			this.start();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}		
 	}
-
-	@Override
-	public boolean stopServer() throws IOException {
-		socket.close();
-		return true;
+	
+	public boolean stopServer() {
+		return false;
 	}
 
 	@Override
 	public void run() {
 		while (!interrupted()) {
 			try {
-				Socket clientSocket = socket.accept();
-				TCPClientHolder tcpch = new TCPClientHolder(clientSocket, (TCPPacketReceiver)packetReceiver);
+				TCPClientHolder ch = new TCPClientHolder(socket.accept(), objectReceiver);
 				synchronized (clients) {
-					clients.add(tcpch);
+					clients.add(ch);
 				}
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				sleep(SLEEP);
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 		super.run();
 	}
-
+	
+	public void startRealtimeServer() {
+		throw new NotImplementedException();
+	}
+	
 }

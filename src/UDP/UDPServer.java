@@ -1,21 +1,22 @@
 package UDP;
+
 import java.net.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import Util.PacketReceiver;
 import Util.Server;
 
-public class UDPServer extends Server<Message> {
+public class UDPServer extends Server {
 
 	private DatagramSocket socket;
-	
+
 	public UDPServer(PacketReceiver<Message> packetReceiver, int port) {
-		super(packetReceiver, port);
 		setName(this.getClass().getName());
 	}
 
 	@Override
 	public boolean startServer() {
 		start();
-		return false;
+		throw new NotImplementedException();
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package Util;
 public abstract class PacketReceiver<E> {
 	private final Object lock = new Object();
 	
-	public final void notifyPacketReceived(E packet, ClientHolder<E> fromClient) {
+	public final void notifyObjectReceived(E packet, ClientHolder<E> fromClient) {
 	    synchronized(lock) {
 	        packetReceived(packet, fromClient);
 	    }
