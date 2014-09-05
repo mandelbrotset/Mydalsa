@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="20" tilewidth="100" tileheight="100">
+ <tileset firstgid="1" name="pipes" tilewidth="100" tileheight="100">
+  <image source="../../../Pictures/mydalsa/pipes.png" width="1000" height="100"/>
+ </tileset>
+ <layer name="pipes" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztl9sOgCAIhrXT+z9ytuUNQ862aP0bF6ESXzK0UnAtzbZm9bYV+ODzyFeR8ZEOYqznpBW2BvokcyJy8az9Mgfc96wcUFg9ezh2w/s4Wb+bh8OzVyNZ2C+9jcOqDBywfrF6zsAxu+/+HDpFcFD9g1vL9WWpIjg08SNjU3EkZ74nvnYck6QXRdfzDA7rPZETVeOZODz96kkOrqdk4Zh5fng4+j8p9EnmQONy8XCcs5YBQA==
+  </data>
+ </layer>
+</map>
