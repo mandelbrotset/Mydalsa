@@ -29,7 +29,7 @@ import com.mydalsa.myflaxa.entities.Sprite;
 
 public class GameState extends State {
 	public static final float PPM = 1000f;
-	public static final float GRAVITY = -9.82f;
+	public static final float GRAVITY = -6.82f;
 	
 	public static final float BIRD_WEIGHT = 10;
 
@@ -48,6 +48,8 @@ public class GameState extends State {
 	private Vector3 eye = new Vector3(1000000f/PPM, 1000000f/PPM, 0f);
 	private int zoom = 10;
 
+	private boolean flax_done = true;
+	private boolean flax = false;
 
 	public GameState(MyFlaxaGame game) {
 		super(game);
@@ -153,20 +155,33 @@ public class GameState extends State {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {
 			zoom++;
 			System.out.println(eye.x + ", " + eye.y);
-		} if(Gdx.input.isKeyJustPressed(Input.Keys.PLUS)){
+		} 
+		if(Gdx.input.isKeyJustPressed(Input.Keys.PLUS)){
 			if(zoom > 0){
 				zoom--;
 			}
-		} if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 			eye.add(-10f, 0f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 			eye.add(10f, 0f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.UP)){
 			eye.add(0f, 10f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
 			eye.add(0f, -10f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			body.applyForceToCenter(0.0f, 0.5f, true);
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+			flax = true;
+			if (!flax_done) {
+				body.applyForceToCenter(0.0f, 7.0f, true);
+				flax_done = true;
+			}
+		} else {
+			flax = false;
+			flax_done = false;
 		}
 	}
 
