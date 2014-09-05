@@ -70,6 +70,13 @@ public class Logger extends Thread {
 		write(currentApplicationName, logLevel, message);
 	}
 	
+	/**
+	 * Writes a message using current application name.
+	 */
+	public void write(LogLevel logLevel, String message, String threadName) {
+		write(currentApplicationName + "." + threadName, logLevel, message);
+	}
+	
 	@Override
 	public void run() {
 		while (!interrupted()) {

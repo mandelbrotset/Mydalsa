@@ -3,6 +3,7 @@ package tcp.server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import util.PacketReceiver;
@@ -25,6 +26,19 @@ public class TCPClientHolder extends ClientHolder<Object> {
 	
 	public String getClientName() {
 		return clientName;
+	}
+	
+	public InetAddress getIP() {
+		return socket.getInetAddress();
+	}
+	
+	public int getPort() {
+		return socket.getPort();
+	}
+	
+	@Override
+	public String toString() {
+		return getIP() + ":" + getPort();
 	}
 	
 	public synchronized boolean write(Object object) throws IOException {
