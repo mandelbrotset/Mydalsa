@@ -26,12 +26,14 @@ public class MyFlaxaGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		stateHandler = new StateHandler(this);
-		
+		Gdx.graphics.setTitle(TITlE);
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 		hudCam = new OrthographicCamera();
 		hudCam.setToOrtho(false, V_WIDTH, V_HEIGHT);
+		
+		stateHandler = new StateHandler(this);
+
 	}
 
 	@Override
@@ -42,13 +44,11 @@ public class MyFlaxaGame extends ApplicationAdapter {
 	
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 		super.pause();
 	}
 	
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 		super.resize(width, height);
 	}
 	
