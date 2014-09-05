@@ -28,10 +28,10 @@ import com.mydalsa.myflaxa.MyFlaxaGame;
 import com.mydalsa.myflaxa.entities.Sprite;
 
 public class GameState extends State {
-	public static final float PPM = 1000f;
-	public static final float GRAVITY = -6.82f;
+	public static final float PPM = 100f;
+	public static final float GRAVITY = -15.82f;
 	
-	public static final float BIRD_WEIGHT = 10;
+	public static final float BIRD_WEIGHT = 1;
 
 	private SpriteBatch batch;
 
@@ -45,11 +45,8 @@ public class GameState extends State {
 	private OrthogonalTiledMapRenderer tmr;
 	private TiledMap map;
 	
-	private Vector3 eye = new Vector3(1000000f/PPM, 1000000f/PPM, 0f);
+	private Vector3 eye = new Vector3(1000f, 1000f, 0f);
 	private int zoom = 10;
-
-	private boolean flax_done = true;
-	private boolean flax = false;
 
 	public GameState(MyFlaxaGame game) {
 		super(game);
@@ -80,8 +77,8 @@ public class GameState extends State {
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(new Vector2(0, 0));
 		ChainShape shape = new ChainShape();
-		Vector2[] vs = { new Vector2(-1000.0f / PPM, 0.0f),
-				new Vector2(1000 / PPM, 200 / PPM) };
+		Vector2[] vs = { new Vector2(-10.0f, 0.0f),
+				new Vector2(10, 2) };
 		shape.createChain(vs);
 		fixtureDef.shape = shape;
 		world.createBody(bodyDef).createFixture(fixtureDef);
@@ -134,11 +131,11 @@ public class GameState extends State {
 		FixtureDef fixtDef = new FixtureDef();
 
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(new Vector2(1000 / PPM, 200 / PPM));
+		bodyDef.position.set(new Vector2(10, 2));
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(100 / PPM, 100 / PPM);
+		shape.setAsBox(0.3f, 0.3f);
 		fixtDef.shape = shape;
-		fixtDef.restitution = 0.5f;
+		fixtDef.restitution = 0.35f;
 		fixtDef.density = 1.0f;
 		bodyDef.active = true;
 
@@ -172,16 +169,18 @@ public class GameState extends State {
 		} 
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
 			eye.add(0f, -10f, 0.0f);
-		} 
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			flax = true;
-			if (!flax_done) {
-				body.applyForceToCenter(0.0f, 7.0f, true);
-				flax_done = true;
-			}
-		} else {
-			flax = false;
-			flax_done = false;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			body.applyForceToCenter(0.0f, 150.0f, true);
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+			body.applyForceToCenter(10.0f, 0.0f, true);
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+			body.applyForceToCenter(-10.0f, 0.0f, true);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+			System.exit(0);
 		}
 	}
 
