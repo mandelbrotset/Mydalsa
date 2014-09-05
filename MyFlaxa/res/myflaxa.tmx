@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="20" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="pipes" tilewidth="100" tileheight="100">
-  <image source="../../../Pictures/mydalsa/pipes.png" width="1000" height="100"/>
+  <image source="pipes.png" width="1000" height="100"/>
  </tileset>
  <layer name="pipes" width="50" height="20">
   <data encoding="base64" compression="zlib">
