@@ -179,7 +179,7 @@ public class GameState extends State {
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
 			eye.add(0f, -10f, 0.0f);
 		}
-		} if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+		 if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
 			body.applyForceToCenter(0.0f, 0.5f, true);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
