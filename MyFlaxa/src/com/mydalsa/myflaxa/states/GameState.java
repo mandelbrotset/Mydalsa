@@ -171,6 +171,10 @@ public class GameState extends State {
 	private void createLayer(TiledMapTileLayer layer) {
 		float tileHeight = layer.getTileHeight();
 		float tileWidth = layer.getTileWidth();
+		
+		float realHeight = Float.parseFloat((String) layer.getProperties().get("height"));
+		float realWidth = Float.parseFloat((String) layer.getProperties().get("witdh"));
+		
 		middle = tileHeight * layer.getHeight() / PPM / 2;
 		lowest = Float.MAX_VALUE;
 		for (int x = 0; x < layer.getWidth(); x++)
@@ -185,7 +189,7 @@ public class GameState extends State {
 
 				if (y < lowest)
 					lowest = y;
-
+				
 				BodyDef bdef = new BodyDef();
 				// create a body + fixture from cell
 				bdef.type = BodyType.StaticBody;
@@ -193,7 +197,8 @@ public class GameState extends State {
 				bdef.position.set((x + 0.5f) * tileWidth / PPM, (y + 0.5f)
 						* tileHeight / PPM);
 				PolygonShape ps = new PolygonShape();
-				ps.setAsBox((tileWidth) / 2 / PPM, (tileHeight) / 2 / PPM);
+				
+				ps.setAsBox((realWidth) / 2 / PPM, (realHeight) / 2 / PPM);
 				FixtureDef fdef = new FixtureDef();
 				fdef.friction = 0;
 				fdef.shape = ps;
