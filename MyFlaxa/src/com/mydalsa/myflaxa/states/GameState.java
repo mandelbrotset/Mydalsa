@@ -1,6 +1,10 @@
 package com.mydalsa.myflaxa.states;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+
+import javax.print.attribute.HashAttributeSet;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -22,12 +26,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mydalsa.myflaxa.MyFlaxaGame;
 import com.mydalsa.myflaxa.entities.Sprite;
@@ -41,9 +47,10 @@ public class GameState extends State {
 	public static final float BIRD_WIDTH = 0.05f;
 
 	public static final float JUMP_VELOCITY = 1.7f;
-	public static final float STATIC_VELOCITY = 0.5f;
+	public static final float START_FORCE = 1f;
 	public static final float BIRD_GRAVITY_SCALE = 0.5f;
-	public static final float xStart = 0.3f;
+	public static final float xStart = 0.3f; 
+	
 	private boolean goingDown;
 	private boolean goingUp;
 	private boolean goingLeft;
@@ -69,15 +76,12 @@ public class GameState extends State {
 	private boolean firstKey;
 	
 	private boolean isDead;
-
-	private float birdVelocity;
 	
 
 	
 	public GameState(MyFlaxaGame game) {
 		super(game);
 		isDead = false;
-		birdVelocity = 0;
 		zoom = 1;
 
 		goingDown = false;
@@ -89,7 +93,7 @@ public class GameState extends State {
 
 		// set up box2d stuff
 		world = new World(new Vector2(0, GRAVITY), true);
-
+		World.setVelocityThreshold(0);
 		b2dr = new Box2DDebugRenderer();
 		
 		// create tiles
@@ -98,7 +102,8 @@ public class GameState extends State {
 		// create player
 		createPlayer();
 
-		createGround();
+	//	createGround();
+	//	createFuck();
 
 		world.setContactListener(new ContactListener() {
 
@@ -121,10 +126,11 @@ public class GameState extends State {
 
 			@Override
 			public void beginContact(Contact contact) {
-				isDead = true;
-				/*
-				// System.out.println("Begin contact" +
+			//	isDead = true;
+				
+				// System.out.println("Begin contact" +/*
 				// body.getLinearVelocity().x);
+				/*
 				if (contact.getFixtureA().isSensor()) {
 					birdVelocity = -birdVelocity;
 					System.out.println("SENSOR");
@@ -133,7 +139,9 @@ public class GameState extends State {
 				if (contact.getFixtureB().isSensor()) {
 					birdVelocity = -birdVelocity;
 					System.out.println("SENSOR");
-				} */
+				} 
+			*/
+				
 			}
 		});
 
@@ -169,6 +177,16 @@ public class GameState extends State {
 	}
 
 	private void createLayer(TiledMapTileLayer layer) {
+		System.out.println("Create layer");
+
+		if(layer.getProperties().containsKey("use")){
+			System.out.println("Contains use");
+			if(layer.getProperties().get("use").equals("0")){
+				System.out.println("Use was 0");
+				return;
+			}
+		}
+		
 		float tileHeight = layer.getTileHeight();
 		float tileWidth = layer.getTileWidth();
 		
@@ -177,35 +195,173 @@ public class GameState extends State {
 		
 		middle = tileHeight * layer.getHeight() / PPM / 2;
 		lowest = Float.MAX_VALUE;
-		for (int x = 0; x < layer.getWidth(); x++)
-			for (int y = 0; y < layer.getHeight(); y++) {
-				Cell cell = layer.getCell(x, y);
+		
+		if(layer.getProperties().containsKey("nopolygonhack")){
+			System.out.println("No polygon hack");
+			for (int x = 0; x < layer.getWidth(); x++)
+				for (int y = 0; y < layer.getHeight(); y++) {
+					Cell cell = layer.getCell(x, y);
 
-				// check if cell exists
-				if (cell == null)
-					continue;
-				if (cell.getTile() == null)
-					continue;
+					// check if cell exists
+					if (cell == null)
+						continue;
+					if (cell.getTile() == null)
+						continue;
 
-				if (y < lowest)
-					lowest = y;
-				
-				BodyDef bdef = new BodyDef();
-				// create a body + fixture from cell
-				bdef.type = BodyType.StaticBody;
+					if (y < lowest)
+						lowest = y;
+					
+					BodyDef bdef = new BodyDef();
+					// create a body + fixture from cell
+					bdef.type = BodyType.StaticBody;
 
-				bdef.position.set((x + 0.5f) * tileWidth / PPM, (y + 0.5f)
-						* tileHeight / PPM);
-				PolygonShape ps = new PolygonShape();
-				
-				ps.setAsBox((realWidth) / 2 / PPM, (realHeight) / 2 / PPM);
-				FixtureDef fdef = new FixtureDef();
-				fdef.friction = 0;
-				fdef.shape = ps;
-				world.createBody(bdef).createFixture(fdef);
-				ps.dispose();
+					bdef.position.set((x + 0.5f) * tileWidth / PPM, (y + 0.5f)
+							* tileHeight / PPM);
+					PolygonShape ps = new PolygonShape();
+					
+					ps.setAsBox((tileWidth) / 2 / PPM, (tileHeight) / 2 / PPM);
+					FixtureDef fdef = new FixtureDef();
+					fdef.friction = 0;
+					fdef.shape = ps;
+					world.createBody(bdef).createFixture(fdef);
+					ps.dispose();
 
+				}
+			return;
+		}else{ ////////TODO: NOT SURE IF WORKING
+			System.out.println("ELSE");
+			ChainShape shape = new ChainShape();
+			BodyDef bdef = new BodyDef();
+			bdef.type = BodyType.StaticBody;
+			bdef.position.set(0,0);
+			System.out.println("Hej: " + layer.getWidth() + ", " + layer.getHeight());
+			ArrayList<Vector2> vs = new ArrayList<Vector2>();
+			for (int x = 0; x < layer.getWidth(); x++)
+				for (int y = 0; y < layer.getHeight(); y++) {
+					Cell cell = layer.getCell(x, y);
+					System.out.println("Heeej");
+					// check if cell exists
+					if (cell == null)
+						continue;
+					if (cell.getTile() == null)
+						continue;
+
+					Vector2 v1 = new Vector2(((x + 0.5f) * tileWidth - (tileWidth/2)) / PPM, ((y + 0.5f) * tileHeight - (tileHeight/2)) / PPM);
+					Vector2 v2 = new Vector2(((x + 0.5f) * tileWidth + (tileWidth/2)) / PPM, ((y + 0.5f) * tileHeight - (tileHeight/2)) / PPM);
+					Vector2 v3 = new Vector2(((x + 0.5f) * tileWidth - (tileWidth/2)) / PPM, ((y + 0.5f) * tileHeight + (tileHeight/2)) / PPM);
+					Vector2 v4 = new Vector2(((x + 0.5f) * tileWidth + (tileWidth/2)) / PPM, ((y + 0.5f) * tileHeight + (tileHeight/2)) / PPM);
+					System.out.println("Vertice");
+					vs.add(v1);
+					vs.add(v2);
+					vs.add(v4);
+					vs.add(v3);
+					vs.add(v1);
+
+
+				}
+			if(vs.isEmpty()){
+				return;
 			}
+			shape.createChain(getCornerArray(vs));
+			FixtureDef fdef = new FixtureDef();
+			fdef.friction = 0;
+			fdef.shape = shape;
+			world.createBody(bdef).createFixture(fdef);
+			shape.dispose();
+			
+		}
+			}
+	
+	private Vector2[] getCornerArray(ArrayList<Vector2> list){
+		Vector2[] vs = new Vector2[5];
+		
+		Vector2 leftUpperCorner= new Vector2();
+		Vector2 rightUpperCorner = new Vector2();
+		Vector2 leftLowerCorner = new Vector2();
+		Vector2 rightLowerCorner = new Vector2();
+		
+		HashMap<Float, ArrayList<Vector2>> mappingYValues = new HashMap<Float, ArrayList<Vector2>>();
+		
+		float lowestX = Float.MAX_VALUE;
+		float lowestY = Float.MAX_VALUE;
+		float highestX = Float.MIN_VALUE;
+		float highestY = Float.MIN_VALUE;
+		
+		for(Vector2 v : list){
+			float x = v.x;
+			float y = v.y;
+			if(x < lowestX)
+				lowestX = x;
+			if(y < lowestY)
+				lowestY = y;
+			
+			if(x > highestX)
+				highestX = x;
+			if(y > highestY)
+				highestY = y;
+			
+
+			
+			if(!mappingYValues.containsKey(y)){
+				mappingYValues.put(y, new ArrayList<Vector2>());
+			}
+			mappingYValues.get(y).add(v);
+
+		}
+		
+		for(Vector2 v : mappingYValues.get(lowestY)){
+			if(v.x == lowestX)
+				leftLowerCorner = v;
+			if(v.x == highestX)
+				rightLowerCorner = v;
+		}
+		for(Vector2 v : mappingYValues.get(highestY)){
+			if(v.x == lowestX)
+				leftUpperCorner = v;
+			if(v.x == highestX)
+				rightUpperCorner = v;
+		}
+	
+		vs[0] = leftLowerCorner;
+		vs[1] = rightLowerCorner;
+		vs[2] = rightUpperCorner;
+		vs[3] = leftUpperCorner;
+		vs[4] = leftLowerCorner;
+		
+		return vs;
+	}
+	
+	private void createFuck(){
+		BodyDef bodyDef = new BodyDef();
+		FixtureDef fixtDef = new FixtureDef();
+
+		bodyDef.type = BodyType.StaticBody;
+		bodyDef.position.set(new Vector2(xStart, middle));
+		
+		PolygonShape shape = new PolygonShape();
+		
+		fixtDef.shape = shape;
+		fixtDef.restitution = 1.0f;
+		
+		Vector2 v1 = new Vector2(0, 5);
+		Vector2 v2 = new Vector2(1, 5);
+		Vector2 v3 = new Vector2(0, 6);
+		Vector2 v4 = new Vector2(1, 6);
+		Vector2 v5 = new Vector2(2, 5);
+		Vector2 v6 = new Vector2(2, 6);
+		
+		Vector2[] v = {v1, v2, v3, v4, v5, v6};
+		
+		shape.set(v);
+		
+		fixtDef.density = BIRD_WEIGHT / (BIRD_HEIGHT * BIRD_WEIGHT);
+		bodyDef.active = true;
+
+		body = world.createBody(bodyDef);
+		body.setGravityScale(0f);
+		body.createFixture(fixtDef);
+		
+		shape.dispose();
 	}
 
 	private void createPlayer() {
@@ -214,10 +370,10 @@ public class GameState extends State {
 
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(new Vector2(xStart, middle));
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(BIRD_WIDTH / 2, BIRD_HEIGHT / 2);
+		Shape shape = new CircleShape();
+		shape.setRadius(BIRD_WIDTH / 2);
 		fixtDef.shape = shape;
-		fixtDef.restitution = 0.8f;
+		fixtDef.restitution = 1.0f;
 		fixtDef.density = BIRD_WEIGHT / (BIRD_HEIGHT * BIRD_WEIGHT);
 		bodyDef.active = true;
 
@@ -226,18 +382,18 @@ public class GameState extends State {
 		body.createFixture(fixtDef);
 
 		fixtDef.isSensor = true;
-		shape.setAsBox(BIRD_WIDTH / 5, BIRD_HEIGHT / 12, new Vector2(
+		
+		shape = new PolygonShape();
+		((PolygonShape) shape).setAsBox(BIRD_WIDTH / 5, BIRD_HEIGHT / 12, new Vector2(
 				BIRD_WIDTH / 2, 0), 0);
 		fixtDef.shape = shape;
 		body.createFixture(fixtDef).setUserData("beakRight");
 		
-		shape.setAsBox(BIRD_WIDTH / 5, BIRD_HEIGHT / 12, new Vector2(-BIRD_WIDTH / 2,0),0);
+		((PolygonShape) shape).setAsBox(BIRD_WIDTH / 5, BIRD_HEIGHT / 12, new Vector2(-BIRD_WIDTH / 2,0),0);
 		fixtDef.shape = shape;
 		body.createFixture(fixtDef).setUserData("beakLeft");
 
-		
-		body.setLinearVelocity(birdVelocity, 0);
-		
+				
 		player = new Sprite(body);
 		shape.dispose();
 	}
@@ -265,13 +421,13 @@ public class GameState extends State {
 			eye.add(0f, -10f, 0.0f);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
-			birdVelocity = -birdVelocity;
+			
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			if (firstKey) {
 				firstKey = false;
 				body.setGravityScale(BIRD_GRAVITY_SCALE);
-				birdVelocity = STATIC_VELOCITY;
+				body.applyForceToCenter(new Vector2(START_FORCE, 0), true);
 			}
 			body.setLinearVelocity(body.getLinearVelocity().x, JUMP_VELOCITY);
 			// body.applyLinearImpulse(0, JUMP_VELOCITY, body.getPosition().x,
@@ -295,8 +451,6 @@ public class GameState extends State {
 		if(isDead){
 			
 			body.setTransform(new Vector2(xStart, middle), 0);
-			birdVelocity = STATIC_VELOCITY;
-			body.setLinearVelocity(birdVelocity, 0.0f);
 			body.setAngularVelocity(0);
 			isDead = false;
 			return;
@@ -354,9 +508,6 @@ public class GameState extends State {
 		}
 
 
-		if (birdVelocity != 0.0f) {
-			body.setLinearVelocity(birdVelocity, body.getLinearVelocity().y);
-		}
 		world.step(dt, 6, 2);
 	}
 
@@ -377,9 +528,9 @@ public class GameState extends State {
 		if (true) {
 			b2dr.render(world, cam.combined.scl(PPM));
 		}
-		tmr.setView(cam.combined, 0, 0, MyFlaxaGame.V_WIDTH,
-				MyFlaxaGame.V_HEIGHT);
-		tmr.render();
+		//tmr.setView(cam.combined, 0, 0, MyFlaxaGame.V_WIDTH,
+		//		MyFlaxaGame.V_HEIGHT);
+	//	tmr.render();
 	}
 
 	@Override
