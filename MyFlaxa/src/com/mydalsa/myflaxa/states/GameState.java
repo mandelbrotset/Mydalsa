@@ -29,7 +29,7 @@ import com.mydalsa.myflaxa.entities.Sprite;
 
 public class GameState extends State {
 	public static final float PPM = 100f;
-	public static final float GRAVITY = -9.82f;
+	public static final float GRAVITY = -15.82f;
 	
 	public static final float BIRD_WEIGHT = 1;
 	public static final float BIRD_HEIGHT = 1f;
@@ -78,7 +78,22 @@ public class GameState extends State {
 
 	}
 
-	
+	private void createGround() {
+		BodyDef bodyDef = new BodyDef();
+		FixtureDef fixtureDef = new FixtureDef();
+
+		bodyDef.type = BodyType.StaticBody;
+		bodyDef.position.set(new Vector2(0, 0));
+		ChainShape shape = new ChainShape();
+		Vector2[] vs = { new Vector2(-10.0f, 0.0f),
+				new Vector2(10, 2) };
+		shape.createChain(vs);
+		fixtureDef.shape = shape;
+		world.createBody(bodyDef).createFixture(fixtureDef);
+		shape.dispose();
+
+	}
+
 	private void loadTiles() {
 		map = new TmxMapLoader().load("res/myflaxa.tmx");
 		tmr = new OrthogonalTiledMapRenderer(map, 1/PPM);
@@ -146,20 +161,35 @@ public class GameState extends State {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {
 			zoom++;
 			System.out.println(eye.x + ", " + eye.y);
-		} if(Gdx.input.isKeyJustPressed(Input.Keys.PLUS)){
+		} 
+		if(Gdx.input.isKeyJustPressed(Input.Keys.PLUS)){
 			if(zoom > 0){
 				zoom--;
 			}
-		} if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 			eye.add(-10f, 0f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 			eye.add(10f, 0f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.UP)){
 			eye.add(0f, 10f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+		} 
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
 			eye.add(0f, -10f, 0.0f);
-		} if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-			body.applyLinearImpulse(new Vector2(0, 8f), body.getPosition(), true);
+		}
+		} if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+			body.applyForceToCenter(0.0f, 0.5f, true);
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+			body.applyForceToCenter(10.0f, 0.0f, true);
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+			body.applyForceToCenter(-10.0f, 0.0f, true);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+			System.exit(0);
 		}
 	}
 
