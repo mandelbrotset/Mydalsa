@@ -58,22 +58,13 @@
    eJzt1yEKwFAMBcFQqCi9/32rv6nNipkTBJYnMgMAAAAAAAAAAAAAAAAAAAAAAAAAMHNvH8Dh2j6Agx4terTo0aJHix4terS82wdwsI8WPVr0aNGjRY8WPVr0aNGjRY8W/3mLfbTo0aJHix4terTo0aJHix4terT4z1vso0WPFj1a9GjRo0WPFj1a9GjRo8V/3mIfLXq06NGiR4seLXq06NGiR4seLc/2AT8+r3sAkQ==
   </data>
  </layer>
- <layer name="6" width="100" height="100">
+ <layer name="6" width="100" height="100" visible="0">
   <properties>
    <property name="height" value="80"/>
    <property name="width" value="80"/>
   </properties>
   <data encoding="base64" compression="zlib">
    eJzt18EJgFAMBcGPIB7sv1/PqSArzFQQWN4h5wAAAAAAAAAAAAAAAAAAAAAAAAAAf3JvH8BwbR/AoEeLHi16tOjRokeLHi3v9gEM9tGiR4seLXq06NGiR4seLXq06NHiP2+xjxY9WvRo0aNFjxY9WvRo0aNFjxb/eYt9tOjRokeLHi16tOjRokeLHi16tPjPW+yjRY8WPVr0aNGjRY8WPVr0aNGj5dk+YMEH3xMAjw==
-  </data>
- </layer>
- <layer name="bajs" width="100" height="100" visible="0">
-  <properties>
-   <property name="height" value="80"/>
-   <property name="width" value="80"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJztzrEJAAAIBDFt3X9gh7CQhwSuv6pMfWgefgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyLDJbQAa
   </data>
  </layer>
  <layer name="7" width="100" height="100" visible="0">
@@ -203,7 +194,7 @@
    eJzt0bEJADAMBDETyP4rp0jlCfwGaYKDqwIAAAAAAAAAAAAAAAAAAAAAAAAAgO9OB9Cc6QAaP7L4kcWPLH5k8QMAAAAAAAAAAAAAAAAAAAB2ej2/ABI=
   </data>
  </layer>
- <layer name="21" width="100" height="100" visible="0">
+ <layer name="21" width="100" height="100">
   <properties>
    <property name="height" value="80"/>
    <property name="width" value="80"/>
