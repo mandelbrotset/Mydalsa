@@ -1,7 +1,10 @@
 package com.mydalsa.myflaxa.states;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+
+import javax.print.attribute.HashAttributeSet;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -90,17 +93,17 @@ public class GameState extends State {
 
 		// set up box2d stuff
 		world = new World(new Vector2(0, GRAVITY), true);
-
+		World.setVelocityThreshold(0);
 		b2dr = new Box2DDebugRenderer();
 
 		// create tiles
-	//	loadTiles();
+		loadTiles();
 
 		// create player
-	//	createPlayer();
+		createPlayer();
 
 	//	createGround();
-		createFuck();
+	//	createFuck();
 
 		world.setContactListener(new ContactListener() {
 
@@ -174,8 +177,12 @@ public class GameState extends State {
 	}
 
 	private void createLayer(TiledMapTileLayer layer) {
+		System.out.println("Create layer");
+
 		if(layer.getProperties().containsKey("use")){
+			System.out.println("Contains use");
 			if(layer.getProperties().get("use").equals("0")){
+				System.out.println("Use was 0");
 				return;
 			}
 		}
@@ -190,7 +197,7 @@ public class GameState extends State {
 		lowest = Float.MAX_VALUE;
 		
 		if(layer.getProperties().containsKey("nopolygonhack")){
-
+			System.out.println("No polygon hack");
 			for (int x = 0; x < layer.getWidth(); x++)
 				for (int y = 0; y < layer.getHeight(); y++) {
 					Cell cell = layer.getCell(x, y);
@@ -222,16 +229,17 @@ public class GameState extends State {
 				}
 			return;
 		}else{ ////////TODO: NOT SURE IF WORKING
-			PolygonShape shape = new PolygonShape();
+			System.out.println("ELSE");
+			ChainShape shape = new ChainShape();
 			BodyDef bdef = new BodyDef();
 			bdef.type = BodyType.StaticBody;
 			bdef.position.set(0,0);
-			
+			System.out.println("Hej: " + layer.getWidth() + ", " + layer.getHeight());
 			ArrayList<Vector2> vs = new ArrayList<Vector2>();
 			for (int x = 0; x < layer.getWidth(); x++)
 				for (int y = 0; y < layer.getHeight(); y++) {
 					Cell cell = layer.getCell(x, y);
-
+					System.out.println("Heeej");
 					// check if cell exists
 					if (cell == null)
 						continue;
@@ -242,16 +250,19 @@ public class GameState extends State {
 					Vector2 v2 = new Vector2(((x + 0.5f) * tileWidth + (tileWidth/2)) / PPM, ((y + 0.5f) * tileHeight - (tileHeight/2)) / PPM);
 					Vector2 v3 = new Vector2(((x + 0.5f) * tileWidth - (tileWidth/2)) / PPM, ((y + 0.5f) * tileHeight + (tileHeight/2)) / PPM);
 					Vector2 v4 = new Vector2(((x + 0.5f) * tileWidth + (tileWidth/2)) / PPM, ((y + 0.5f) * tileHeight + (tileHeight/2)) / PPM);
-					
+					System.out.println("Vertice");
 					vs.add(v1);
 					vs.add(v2);
-					vs.add(v3);
 					vs.add(v4);
+					vs.add(v3);
+					vs.add(v1);
 
 
 				}
-			
-			shape.set((Vector2[]) vs.toArray());
+			if(vs.isEmpty()){
+				return;
+			}
+			shape.createChain(getCornerArray(vs));
 			FixtureDef fdef = new FixtureDef();
 			fdef.friction = 0;
 			fdef.shape = shape;
@@ -260,6 +271,65 @@ public class GameState extends State {
 			
 		}
 			}
+	
+	private Vector2[] getCornerArray(ArrayList<Vector2> list){
+		Vector2[] vs = new Vector2[5];
+		
+		Vector2 leftUpperCorner= new Vector2();
+		Vector2 rightUpperCorner = new Vector2();
+		Vector2 leftLowerCorner = new Vector2();
+		Vector2 rightLowerCorner = new Vector2();
+		
+		HashMap<Float, ArrayList<Vector2>> mappingYValues = new HashMap<Float, ArrayList<Vector2>>();
+		
+		float lowestX = Float.MAX_VALUE;
+		float lowestY = Float.MAX_VALUE;
+		float highestX = Float.MIN_VALUE;
+		float highestY = Float.MIN_VALUE;
+		
+		for(Vector2 v : list){
+			float x = v.x;
+			float y = v.y;
+			if(x < lowestX)
+				lowestX = x;
+			if(y < lowestY)
+				lowestY = y;
+			
+			if(x > highestX)
+				highestX = x;
+			if(y > highestY)
+				highestY = y;
+			
+
+			
+			if(!mappingYValues.containsKey(y)){
+				mappingYValues.put(y, new ArrayList<Vector2>());
+			}
+			mappingYValues.get(y).add(v);
+
+		}
+		
+		for(Vector2 v : mappingYValues.get(lowestY)){
+			if(v.x == lowestX)
+				leftLowerCorner = v;
+			if(v.x == highestX)
+				rightLowerCorner = v;
+		}
+		for(Vector2 v : mappingYValues.get(highestY)){
+			if(v.x == lowestX)
+				leftUpperCorner = v;
+			if(v.x == highestX)
+				rightUpperCorner = v;
+		}
+	
+		vs[0] = leftLowerCorner;
+		vs[1] = rightLowerCorner;
+		vs[2] = rightUpperCorner;
+		vs[3] = leftUpperCorner;
+		vs[4] = leftLowerCorner;
+		
+		return vs;
+	}
 	
 	private void createFuck(){
 		BodyDef bodyDef = new BodyDef();
