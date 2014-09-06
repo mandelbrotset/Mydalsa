@@ -57,12 +57,19 @@ public class TCPClientHolder extends ClientHolder<Object> {
 	@Override
 	public void run() {
 		while (!interrupted()) {
-			try {
-				Object o = inputStream.readObject();
-				objectReceiver.notifyObjectReceived(o, this);
-			} catch (ClassNotFoundException | IOException e1) {
-				e1.printStackTrace();
-			}
+				Object o;
+				try {
+					o = inputStream.readObject();
+					objectReceiver.notifyObjectReceived(o, this);
+
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
 			try {
 				sleep(SLEEP);
 			} catch (InterruptedException e) {

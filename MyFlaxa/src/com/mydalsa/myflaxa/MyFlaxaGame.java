@@ -1,9 +1,11 @@
 package com.mydalsa.myflaxa;
 
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mydalsa.myflaxa.handlers.Content;
 import com.mydalsa.myflaxa.handlers.StateHandler;
 
 public class MyFlaxaGame extends ApplicationAdapter {
@@ -13,6 +15,7 @@ public class MyFlaxaGame extends ApplicationAdapter {
 
 	private OrthographicCamera cam;
 	private OrthographicCamera hudCam;
+	private static Content res;
 	
 	public static final String TITlE = "MyFlaxa";
 	public static final int V_WIDTH = 1000;
@@ -25,6 +28,8 @@ public class MyFlaxaGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		res = new Content();
+		res.loadTexture("res/flax_50.png", "flax");
 		Gdx.graphics.setDisplayMode(V_WIDTH, V_HEIGHT, false);
 		batch = new SpriteBatch();
 		Gdx.graphics.setTitle(TITlE);
@@ -65,5 +70,8 @@ public class MyFlaxaGame extends ApplicationAdapter {
 		return hudCam;
 	}
 	
+	public static Content getRes() {
+		return res;
+	}
 	
 }

@@ -53,11 +53,14 @@ public class TCPServer extends Server {
 			this.join();
 			logInfo("Server stopped");
 			return true;
-		} catch (InterruptedException | IOException e) {
-			logError("Error when stopping server: " + e.getMessage());
-			e.printStackTrace();
-			return false;
+		} catch (InterruptedException e1) {
+			logError("Error when stopping server: " + e1.getMessage());
+			e1.printStackTrace();
+		}catch (IOException e2) {
+			logError("Error when stopping server: " + e2.getMessage());
+			e2.printStackTrace();
 		}
+		return false;
 	}
 	
 	@Override
