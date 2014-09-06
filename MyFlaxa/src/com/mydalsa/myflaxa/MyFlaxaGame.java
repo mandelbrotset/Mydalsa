@@ -15,9 +15,9 @@ public class MyFlaxaGame extends ApplicationAdapter {
 	private OrthographicCamera hudCam;
 	
 	public static final String TITlE = "MyFlaxa";
-	public static final int V_WIDTH = 320;
-	public static final int V_HEIGHT = 240;
-	public static final int SCALE = 2;
+	public static final int V_WIDTH = 1000;
+	public static final int V_HEIGHT = 800;
+	public static final int SCALE = 1;
 
 	public static final float STEP = 1 / 60f;
 	
@@ -25,7 +25,9 @@ public class MyFlaxaGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		
 		batch = new SpriteBatch();
+		Gdx.graphics.setDisplayMode(V_WIDTH, V_HEIGHT, false);
 		Gdx.graphics.setTitle(TITlE);
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, V_WIDTH, V_HEIGHT);

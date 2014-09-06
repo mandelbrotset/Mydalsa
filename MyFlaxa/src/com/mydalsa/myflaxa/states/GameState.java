@@ -28,10 +28,14 @@ import com.mydalsa.myflaxa.MyFlaxaGame;
 import com.mydalsa.myflaxa.entities.Sprite;
 
 public class GameState extends State {
-	public static final float PPM = 1000f;
+	public static final float PPM = 100f;
 	public static final float GRAVITY = -9.82f;
 	
-	public static final float BIRD_WEIGHT = 10;
+	public static final float BIRD_WEIGHT = 1;
+	public static final float BIRD_HEIGHT = 1f;
+	public static final float BIRD_WIDTH = 1f;
+	
+	
 
 	private SpriteBatch batch;
 
@@ -44,9 +48,10 @@ public class GameState extends State {
 	private Body body;
 	private OrthogonalTiledMapRenderer tmr;
 	private TiledMap map;
+	private float middle;
 	
-	private Vector3 eye = new Vector3(1000000f/PPM, 1000000f/PPM, 0f);
-	private int zoom = 10;
+	private Vector3 eye;
+	private int zoom = 2;
 
 
 	public GameState(MyFlaxaGame game) {
@@ -59,11 +64,13 @@ public class GameState extends State {
 
 		b2dr = new Box2DDebugRenderer();
 
-		// create player
-		createPlayer();
-
 		// create tiles
 		loadTiles();
+		
+		// create player
+		createPlayer();
+		
+
 
 		// set up debug matrix
 		debugMatrix = new Matrix4(cam.combined);
@@ -71,25 +78,10 @@ public class GameState extends State {
 
 	}
 
-	private void createGround() {
-		BodyDef bodyDef = new BodyDef();
-		FixtureDef fixtureDef = new FixtureDef();
-
-		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(new Vector2(0, 0));
-		ChainShape shape = new ChainShape();
-		Vector2[] vs = { new Vector2(-1000.0f / PPM, 0.0f),
-				new Vector2(1000 / PPM, 200 / PPM) };
-		shape.createChain(vs);
-		fixtureDef.shape = shape;
-		world.createBody(bodyDef).createFixture(fixtureDef);
-		shape.dispose();
-
-	}
-
+	
 	private void loadTiles() {
 		map = new TmxMapLoader().load("res/myflaxa.tmx");
-		tmr = new OrthogonalTiledMapRenderer(map, 1 / PPM);
+		tmr = new OrthogonalTiledMapRenderer(map, 1/PPM);
 		Iterator<MapLayer> i = map.getLayers().iterator();
 		while (i.hasNext()) {
 			createLayer((TiledMapTileLayer) i.next());
@@ -99,6 +91,7 @@ public class GameState extends State {
 	private void createLayer(TiledMapTileLayer layer) {
 		float tileHeight = layer.getTileHeight();
 		float tileWidth = layer.getTileWidth();
+		middle = tileHeight*layer.getHeight() / PPM / 2;
 
 		for (int x = 0; x < layer.getWidth(); x++)
 			for (int y = 0; y < layer.getHeight(); y++) {
@@ -114,12 +107,12 @@ public class GameState extends State {
 				// create a body + fixture from cell
 				bdef.type = BodyType.StaticBody;
 
-				bdef.position.set((x + 0.5f) * tileWidth / PPM, (y + 0.5f)
+				bdef.position.set((x + 0.5f) * tileWidth /PPM, (y + 0.5f)
 						* tileHeight / PPM);
 				PolygonShape ps = new PolygonShape();
-				ps.setAsBox((tileWidth / PPM) / 2, (tileHeight / PPM) / 2);
+				ps.setAsBox((tileWidth) / 2 / PPM, (tileHeight) / 2 / PPM);
 				FixtureDef fdef = new FixtureDef();
-
+				fdef.friction = 0;
 				fdef.shape = ps;
 				world.createBody(bdef).createFixture(fdef);
 				ps.dispose();
@@ -132,18 +125,18 @@ public class GameState extends State {
 		FixtureDef fixtDef = new FixtureDef();
 
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(new Vector2(1000 / PPM, 200 / PPM));
+		bodyDef.position.set(new Vector2(0, middle));
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(100 / PPM, 100 / PPM);
+		shape.setAsBox(BIRD_WIDTH/2, BIRD_HEIGHT/2);
 		fixtDef.shape = shape;
-		fixtDef.restitution = 0.5f;
-		fixtDef.density = 1.0f;
+		fixtDef.restitution = 0f;
+		fixtDef.density = BIRD_WEIGHT/ (BIRD_HEIGHT*BIRD_WEIGHT);
 		bodyDef.active = true;
 
 		body = world.createBody(bodyDef);
-
+	//	body.setGravityScale(1f);
 		body.createFixture(fixtDef);
-		
+		body.setLinearVelocity(5, 0);
 		player = new Sprite(body);
 		shape.dispose();
 	}
@@ -165,8 +158,8 @@ public class GameState extends State {
 			eye.add(0f, 10f, 0.0f);
 		} if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
 			eye.add(0f, -10f, 0.0f);
-		} if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			body.applyForceToCenter(0.0f, 0.5f, true);
+		} if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			body.applyLinearImpulse(new Vector2(0, 8f), body.getPosition(), true);
 		}
 	}
 
@@ -175,6 +168,9 @@ public class GameState extends State {
 		// System.out.println(body.getPosition().x + ", " +
 		// body.getPosition().y);
 		handleInput();
+		if(body.getLinearVelocity().x < 5)
+			body.setLinearVelocity(5, body.getLinearVelocity().y);
+
 		world.step(dt, 6, 2);
 	}
 	@Override
@@ -182,6 +178,9 @@ public class GameState extends State {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		eye = new Vector3(body.getPosition().x*PPM, middle*PPM, 0f);
+
 		cam.position.set(eye);
 		System.out.println(eye.x + ", " + eye.y);
 		cam.zoom = zoom;
