@@ -31,16 +31,20 @@ import com.mydalsa.myflaxa.entities.Sprite;
 public class GameState extends State {
 	public static final float PPM = 600f;
 	public static final float GRAVITY = -9.82f;
-	
+
 	public static final float BIRD_WEIGHT = 0.05f;
 	public static final float BIRD_HEIGHT = 0.05f;
 	public static final float BIRD_WIDTH = 0.05f;
-	
+
 	public static final float JUMP_VELOCITY = 2f;
 	public static final float STATIC_VELOCITY = 0.5f;
-	public static final float BIRD_GRAVITY_SCALE =  0.5f;
+	public static final float BIRD_GRAVITY_SCALE = 0.5f;
 	
-
+	private boolean goingDown;
+	private boolean goingUp;
+	private boolean goingLeft;
+	private boolean goingRight;
+	
 	private SpriteBatch batch;
 
 	private boolean debug = true;
@@ -53,19 +57,22 @@ public class GameState extends State {
 	private OrthogonalTiledMapRenderer tmr;
 	private TiledMap map;
 	private float middle;
-	
-	private Vector3 eye;
-	private int zoom = 2;
-	private boolean firstKey;
 
+	private float lowest;
+
+	private Vector3 eye;
+	private int zoom = 1;
+	private boolean firstKey;
 
 	public GameState(MyFlaxaGame game) {
 		super(game);
+		goingDown = false;
+		goingUp = false;
+		
 		firstKey = true;
 		batch = game.getSpriteBatch();
 		cam = game.getCamera();
-		
-		
+
 		// set up box2d stuff
 		world = new World(new Vector2(0, GRAVITY), true);
 
@@ -73,11 +80,11 @@ public class GameState extends State {
 
 		// create tiles
 		loadTiles();
-		
+
 		// create player
 		createPlayer();
-			
-	//	createGround();
+
+		createGround();
 
 		// set up debug matrix
 		debugMatrix = new Matrix4(cam.combined);
@@ -92,10 +99,10 @@ public class GameState extends State {
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(new Vector2(0, 0));
 		ChainShape shape = new ChainShape();
-		Vector2[] vs = { new Vector2(-10.0f, 0.0f),
-				new Vector2(10, 2) };
+		Vector2[] vs = { new Vector2(-100.0f, lowest), new Vector2(100, lowest) };
 		shape.createChain(vs);
 		fixtureDef.shape = shape;
+		fixtureDef.friction = 0.0f;
 		world.createBody(bodyDef).createFixture(fixtureDef);
 		shape.dispose();
 
@@ -103,7 +110,7 @@ public class GameState extends State {
 
 	private void loadTiles() {
 		map = new TmxMapLoader().load("res/myflaxa.tmx");
-		tmr = new OrthogonalTiledMapRenderer(map, 1/PPM);
+		tmr = new OrthogonalTiledMapRenderer(map, 1 / PPM);
 		Iterator<MapLayer> i = map.getLayers().iterator();
 		while (i.hasNext()) {
 			createLayer((TiledMapTileLayer) i.next());
@@ -113,8 +120,8 @@ public class GameState extends State {
 	private void createLayer(TiledMapTileLayer layer) {
 		float tileHeight = layer.getTileHeight();
 		float tileWidth = layer.getTileWidth();
-		middle = tileHeight*layer.getHeight() / PPM / 2;
-
+		middle = tileHeight * layer.getHeight() / PPM / 2;
+		lowest = Float.MAX_VALUE;
 		for (int x = 0; x < layer.getWidth(); x++)
 			for (int y = 0; y < layer.getHeight(); y++) {
 				Cell cell = layer.getCell(x, y);
@@ -125,11 +132,14 @@ public class GameState extends State {
 				if (cell.getTile() == null)
 					continue;
 
+				if (y < lowest)
+					lowest = y;
+
 				BodyDef bdef = new BodyDef();
 				// create a body + fixture from cell
 				bdef.type = BodyType.StaticBody;
 
-				bdef.position.set((x + 0.5f) * tileWidth /PPM, (y + 0.5f)
+				bdef.position.set((x + 0.5f) * tileWidth / PPM, (y + 0.5f)
 						* tileHeight / PPM);
 				PolygonShape ps = new PolygonShape();
 				ps.setAsBox((tileWidth) / 2 / PPM, (tileHeight) / 2 / PPM);
@@ -149,14 +159,14 @@ public class GameState extends State {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(new Vector2(0, middle));
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(BIRD_WIDTH/2, BIRD_HEIGHT/2);
+		shape.setAsBox(BIRD_WIDTH / 2, BIRD_HEIGHT / 2);
 		fixtDef.shape = shape;
-		fixtDef.restitution = 0f;
-		fixtDef.density = BIRD_WEIGHT/ (BIRD_HEIGHT*BIRD_WEIGHT);
+		fixtDef.restitution = 0.0f;
+		fixtDef.density = BIRD_WEIGHT / (BIRD_HEIGHT * BIRD_WEIGHT);
 		bodyDef.active = true;
-		
+
 		body = world.createBody(bodyDef);
-		
+
 		body.setGravityScale(0f);
 		body.createFixture(fixtDef);
 		body.setLinearVelocity(STATIC_VELOCITY, 0);
@@ -168,41 +178,41 @@ public class GameState extends State {
 	public void handleInput() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {
 			zoom++;
-			System.out.println(eye.x + ", " + eye.y);
-		} 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.PLUS)){
-			if(zoom > 0){
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.PLUS)) {
+			if (zoom > 0) {
 				zoom--;
 			}
-		} 
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			eye.add(-10f, 0f, 0.0f);
-		} 
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			eye.add(10f, 0f, 0.0f);
-		} 
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			eye.add(0f, 10f, 0.0f);
-		} 
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			eye.add(0f, -10f, 0.0f);
 		}
-		 if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-			 if(firstKey){
-				 firstKey = false;
-				 body.setGravityScale(BIRD_GRAVITY_SCALE);
-			 }
-			 body.setLinearVelocity(body.getLinearVelocity().x, JUMP_VELOCITY);
-			// body.applyLinearImpulse(0, JUMP_VELOCITY, body.getPosition().x, body.getPosition().y, true);
-		//	body.applyForceToCenter(0.0f, JUMP_FORCE, true);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			if (firstKey) {
+				firstKey = false;
+				body.setGravityScale(BIRD_GRAVITY_SCALE);
+			}
+			body.setLinearVelocity(body.getLinearVelocity().x, JUMP_VELOCITY);
+			// body.applyLinearImpulse(0, JUMP_VELOCITY, body.getPosition().x,
+			// body.getPosition().y, true);
+			// body.applyForceToCenter(0.0f, JUMP_FORCE, true);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			body.applyForceToCenter(10.0f, 0.0f, true);
+			body.applyForceToCenter(2.0f, 0.0f, true);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			body.applyForceToCenter(-10.0f, 0.0f, true);
+			body.applyForceToCenter(-2.0f, 0.0f, true);
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			System.exit(0);
 		}
 	}
@@ -212,21 +222,55 @@ public class GameState extends State {
 		// System.out.println(body.getPosition().x + ", " +
 		// body.getPosition().y);
 		handleInput();
-		if(body.getLinearVelocity().x < STATIC_VELOCITY)
-			body.setLinearVelocity(STATIC_VELOCITY, body.getLinearVelocity().y);
+		
+		if(body.getLinearVelocity().x < -0.01){
+			goingLeft = true;
+			goingRight = false;
+		}if(body.getLinearVelocity().x > 0.01){
+			goingLeft = false;
+			goingRight = true;
+		}
 
+		if(body.getLinearVelocity().y < -0.01 && !goingDown){
+			goingDown = true;
+			goingUp = false;
+			body.setAngularVelocity(-5f);
+
+		}else if(body.getLinearVelocity().y > 0.01 && !goingUp){
+			goingUp = true;
+			goingDown = false;
+
+			body.setAngularVelocity(5f);
+
+		}
+		if(goingUp && body.getAngle() > Math.PI/4){
+			body.setAngularVelocity(0);
+			body.setTransform(body.getPosition().x, body.getPosition().y, (float) (Math.PI/4f));
+
+		}
+		if(goingDown && body.getAngle() < -Math.PI/4){
+			body.setAngularVelocity(0);
+			body.setTransform(body.getPosition().x, body.getPosition().y, (float) (-Math.PI/4f));
+		}
+
+		if (STATIC_VELOCITY != 0.0f) {
+			if (body.getLinearVelocity().x < STATIC_VELOCITY)
+				body.setLinearVelocity(STATIC_VELOCITY,
+						body.getLinearVelocity().y);
+		}
 		world.step(dt, 6, 2);
 	}
+
 	@Override
 	public void render() {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		eye = new Vector3(body.getPosition().x*PPM, body.getPosition().y*PPM, 0f);
+
+		eye = new Vector3(body.getPosition().x * PPM, body.getPosition().y
+				* PPM, 0f);
 
 		cam.position.set(eye);
-		System.out.println(eye.x + ", " + eye.y);
 		cam.zoom = zoom;
 		cam.update();
 
@@ -234,7 +278,8 @@ public class GameState extends State {
 		if (true) {
 			b2dr.render(world, cam.combined.scl(PPM));
 		}
-		tmr.setView(cam.combined, 0, 0, MyFlaxaGame.V_WIDTH, MyFlaxaGame.V_HEIGHT	);
+		tmr.setView(cam.combined, 0, 0, MyFlaxaGame.V_WIDTH,
+				MyFlaxaGame.V_HEIGHT);
 		tmr.render();
 	}
 
