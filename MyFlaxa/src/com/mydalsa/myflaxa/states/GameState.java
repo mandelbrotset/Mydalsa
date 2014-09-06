@@ -28,13 +28,16 @@ import com.mydalsa.myflaxa.MyFlaxaGame;
 import com.mydalsa.myflaxa.entities.Sprite;
 
 public class GameState extends State {
-	public static final float PPM = 100f;
-	public static final float GRAVITY = -15.82f;
+	public static final float PPM = 600f;
+	public static final float GRAVITY = -9.82f;
 	
-	public static final float BIRD_WEIGHT = 1;
-	public static final float BIRD_HEIGHT = 1f;
-	public static final float BIRD_WIDTH = 1f;
+	public static final float BIRD_WEIGHT = 0.05f;
+	public static final float BIRD_HEIGHT = 0.05f;
+	public static final float BIRD_WIDTH = 0.05f;
 	
+	public static final float JUMP_VELOCITY = 2f;
+	public static final float STATIC_VELOCITY = 0.5f;
+	public static final float BIRD_GRAVITY_SCALE =  0.5f;
 	
 
 	private SpriteBatch batch;
@@ -52,13 +55,16 @@ public class GameState extends State {
 	
 	private Vector3 eye;
 	private int zoom = 2;
+	private boolean firstKey;
 
 
 	public GameState(MyFlaxaGame game) {
 		super(game);
+		firstKey = true;
 		batch = game.getSpriteBatch();
 		cam = game.getCamera();
-
+		
+		
 		// set up box2d stuff
 		world = new World(new Vector2(0, GRAVITY), true);
 
@@ -69,8 +75,8 @@ public class GameState extends State {
 		
 		// create player
 		createPlayer();
-		
-
+			
+	//	createGround();
 
 		// set up debug matrix
 		debugMatrix = new Matrix4(cam.combined);
@@ -147,11 +153,12 @@ public class GameState extends State {
 		fixtDef.restitution = 0f;
 		fixtDef.density = BIRD_WEIGHT/ (BIRD_HEIGHT*BIRD_WEIGHT);
 		bodyDef.active = true;
-
+		
 		body = world.createBody(bodyDef);
-	//	body.setGravityScale(1f);
+		
+		body.setGravityScale(0f);
 		body.createFixture(fixtDef);
-		body.setLinearVelocity(5, 0);
+		body.setLinearVelocity(STATIC_VELOCITY, 0);
 		player = new Sprite(body);
 		shape.dispose();
 	}
@@ -179,8 +186,14 @@ public class GameState extends State {
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
 			eye.add(0f, -10f, 0.0f);
 		}
-		 if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			body.applyForceToCenter(0.0f, 0.5f, true);
+		 if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			 if(firstKey){
+				 firstKey = false;
+				 body.setGravityScale(BIRD_GRAVITY_SCALE);
+			 }
+			 body.setLinearVelocity(body.getLinearVelocity().x, JUMP_VELOCITY);
+			// body.applyLinearImpulse(0, JUMP_VELOCITY, body.getPosition().x, body.getPosition().y, true);
+		//	body.applyForceToCenter(0.0f, JUMP_FORCE, true);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
 			body.applyForceToCenter(10.0f, 0.0f, true);
@@ -198,8 +211,8 @@ public class GameState extends State {
 		// System.out.println(body.getPosition().x + ", " +
 		// body.getPosition().y);
 		handleInput();
-		if(body.getLinearVelocity().x < 5)
-			body.setLinearVelocity(5, body.getLinearVelocity().y);
+		if(body.getLinearVelocity().x < STATIC_VELOCITY)
+			body.setLinearVelocity(STATIC_VELOCITY, body.getLinearVelocity().y);
 
 		world.step(dt, 6, 2);
 	}
@@ -209,7 +222,7 @@ public class GameState extends State {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		eye = new Vector3(body.getPosition().x*PPM, middle*PPM, 0f);
+		eye = new Vector3(body.getPosition().x*PPM, body.getPosition().y*PPM, 0f);
 
 		cam.position.set(eye);
 		System.out.println(eye.x + ", " + eye.y);
