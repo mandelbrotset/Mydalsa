@@ -36,7 +36,7 @@ public class GameState extends State {
 	public static final float BIRD_HEIGHT = 0.05f;
 	public static final float BIRD_WIDTH = 0.05f;
 
-	public static final float JUMP_VELOCITY = 2f;
+	public static final float JUMP_VELOCITY = 1.7f;
 	public static final float STATIC_VELOCITY = 0.5f;
 	public static final float BIRD_GRAVITY_SCALE = 0.5f;
 	
@@ -61,11 +61,17 @@ public class GameState extends State {
 	private float lowest;
 
 	private Vector3 eye;
-	private int zoom = 1;
+	private int zoom;
 	private boolean firstKey;
-
+	
+	private float birdVelocity;
+	
 	public GameState(MyFlaxaGame game) {
 		super(game);
+		
+		birdVelocity = 0;
+		zoom = 1;
+		
 		goingDown = false;
 		goingUp = false;
 		
@@ -169,7 +175,7 @@ public class GameState extends State {
 
 		body.setGravityScale(0f);
 		body.createFixture(fixtDef);
-		body.setLinearVelocity(STATIC_VELOCITY, 0);
+		body.setLinearVelocity(birdVelocity, 0);
 		player = new Sprite(body);
 		shape.dispose();
 	}
@@ -200,6 +206,7 @@ public class GameState extends State {
 			if (firstKey) {
 				firstKey = false;
 				body.setGravityScale(BIRD_GRAVITY_SCALE);
+				birdVelocity = STATIC_VELOCITY;
 			}
 			body.setLinearVelocity(body.getLinearVelocity().x, JUMP_VELOCITY);
 			// body.applyLinearImpulse(0, JUMP_VELOCITY, body.getPosition().x,
@@ -234,13 +241,13 @@ public class GameState extends State {
 		if(body.getLinearVelocity().y < -0.01 && !goingDown){
 			goingDown = true;
 			goingUp = false;
-			body.setAngularVelocity(-5f);
+			body.setAngularVelocity(-7f);
 
 		}else if(body.getLinearVelocity().y > 0.01 && !goingUp){
 			goingUp = true;
 			goingDown = false;
 
-			body.setAngularVelocity(5f);
+			body.setAngularVelocity(7f);
 
 		}
 		if(goingUp && body.getAngle() > Math.PI/4){
@@ -253,9 +260,9 @@ public class GameState extends State {
 			body.setTransform(body.getPosition().x, body.getPosition().y, (float) (-Math.PI/4f));
 		}
 
-		if (STATIC_VELOCITY != 0.0f) {
-			if (body.getLinearVelocity().x < STATIC_VELOCITY)
-				body.setLinearVelocity(STATIC_VELOCITY,
+		if (birdVelocity != 0.0f) {
+			if (body.getLinearVelocity().x < birdVelocity)
+				body.setLinearVelocity(birdVelocity,
 						body.getLinearVelocity().y);
 		}
 		world.step(dt, 6, 2);
