@@ -2,6 +2,7 @@ package com.mydalsa.myflaxa.states;
 
 import java.util.Iterator;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -233,7 +234,7 @@ public class GameState extends State {
 		if (true) {
 			b2dr.render(world, cam.combined.scl(PPM));
 		}
-		tmr.setView(cam);
+		tmr.setView(cam.combined, 0, 0, MyFlaxaGame.V_WIDTH, MyFlaxaGame.V_HEIGHT	);
 		tmr.render();
 	}
 

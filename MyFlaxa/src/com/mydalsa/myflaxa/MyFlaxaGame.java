@@ -25,9 +25,8 @@ public class MyFlaxaGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		
-		batch = new SpriteBatch();
 		Gdx.graphics.setDisplayMode(V_WIDTH, V_HEIGHT, false);
+		batch = new SpriteBatch();
 		Gdx.graphics.setTitle(TITlE);
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
