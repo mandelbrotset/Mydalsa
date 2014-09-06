@@ -91,7 +91,7 @@ public class GameState extends State {
 		world = new World(new Vector2(0, GRAVITY), true);
 
 		b2dr = new Box2DDebugRenderer();
-
+		
 		// create tiles
 		loadTiles();
 
