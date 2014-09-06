@@ -37,6 +37,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mydalsa.myflaxa.MyFlaxaGame;
 import com.mydalsa.myflaxa.entities.Sprite;
+import com.mydalsa.myflaxa.multiplayer.Test;
 
 public class GameState extends State {
 	public static final float PPM = 600f;
@@ -149,6 +150,8 @@ public class GameState extends State {
 		debugMatrix = new Matrix4(cam.combined);
 		debugMatrix.scl(PPM);
 
+		Test test = new Test();
+		
 	}
 
 	private void createGround() {

@@ -66,8 +66,10 @@ public class TCPServer extends Server {
 		
 		while (!interrupted() && isRunning) {
 			try {
+				java.net.Socket clientSocket = socket.accept();
+				logInfo("new client connected");
 				TCPClientHolder ch = new TCPClientHolder(socket.accept(), objectReceiver);
-				logInfo("New client connected: " + ch.toString());
+				logInfo("clientholder created: " + ch.toString());
 				synchronized (clients) {
 					clients.add(ch);
 				}
