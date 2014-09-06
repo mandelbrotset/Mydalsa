@@ -3,13 +3,384 @@
  <tileset firstgid="1" name="pipes" tilewidth="100" tileheight="100">
   <image source="pipes.png" width="1100" height="100"/>
  </tileset>
- <layer name="pipes" width="100" height="100">
+ <layer name="pipes" width="100" height="100" visible="0">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="use" value="0"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztne1SgzAQALFWrfb931cZZUYZyR00TZayO8MvruFjSXNHCh0GLpev5ekOy0fLg3ggTjtr99HRBwt9sNAHC32w0AeL67Ccsz4Hnz0XPnu90/4+OvYPFvpgoQ8W+mChDxb6YKEPFvpgoQ8Wpfp8Tc0+r9Wtz7dh/2ChDxb6YKEPFvpgoQ8W+mChDxb6YDHW0f/V3KW58cxifb4N+wcLfbDQBwt9sNAHC32w0AcLfbA4oo/MM5PZeezWcdn58t77mY0bnzPNXCvZ66lX3Fqy7b5Wbi+KOyXbOqqP2u219tH6etrKUXxk0cfy+r35GPOP7PsVlmJJxzNfvzcfb8N3nhI5ufzEvd+w/ZdkXGsf2XEhy637Hzkpuaix/a1x0XnM+qhNjf2fnMxrkPNQdhG1+5vW41xtH7X7d8TSea3Vn/fuo3feVBt9sNAHi9p1cGZ7e/axNF5lx7GI1tcN3UfpvE457VJ+VapPWucdWbI+WtdFUVxUX0T1Sa/v1eg89rq/e0v+H7mYKDnp5YN6vz3L0v2SyEUUSzqe+fq9+WjZbuv7XPpgxemDFdfLR+98k+xjHPNov7M46u9LsnlKL3r3D/mLPljog4U+WOiDhT5Y6IOFPljog8Xa9ydm6vdp/lDWY/9goQ8W+mChDxb6YKEPFvpgoQ8W+mAxr89L/zm45p2K1ufbsH+w0AcLfbDQBwt9sNAHC32w0AcLfbAozZ+XavWRUr1ufb4N+wcLfbDQBwt9sNAHC32w0AcLfbDQB4vMs/FbFvJz3p/dfwcE
+  </data>
+ </layer>
+ <layer name="1" width="100" height="100">
   <properties>
    <property name="height" value="80"/>
    <property name="width" value="80"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztne1SgzAQALFWrfb931cZZUYZyR00TZayO8MvruFjSXNHCh0GLpev5ekOy0fLg3ggTjtr99HRBwt9sNAHC32w0AeL67Ccsz4Hnz0XPnu90/4+OvYPFvpgoQ8W+mChDxb6YKEPFvpgoQ8Wpfp8Tc0+r9Wtz7dh/2ChDxb6YKEPFvpgoQ8W+mChDxb6YDHW0f/V3KW58cxifb4N+wcLfbDQBwt9sNAHC32w0AcLfbA4oo/MM5PZeezWcdn58t77mY0bnzPNXCvZ66lX3Fqy7b5Wbi+KOyXbOqqP2u219tH6etrKUXxk0cfy+r35GPOP7PsVlmJJxzNfvzcfb8N3nhI5ufzEvd+w/ZdkXGsf2XEhy637Hzkpuaix/a1x0XnM+qhNjf2fnMxrkPNQdhG1+5vW41xtH7X7d8TSea3Vn/fuo3feVBt9sNAHi9p1cGZ7e/axNF5lx7GI1tcN3UfpvE457VJ+VapPWucdWbI+WtdFUVxUX0T1Sa/v1eg89rq/e0v+H7mYKDnp5YN6vz3L0v2SyEUUSzqe+fq9+WjZbuv7XPpgxemDFdfLR+98k+xjHPNov7M46u9LsnlKL3r3D/mLPljog4U+WOiDhT5Y6IOFPljog8Xa9ydm6vdp/lDWY/9goQ8W+mChDxb6YKEPFvpgoQ8W+mAxr89L/zm45p2K1ufbsH+w0AcLfbDQBwt9sNAHC32w0AcLfbAozZ+XavWRUr1ufb4N+wcLfbDQBwt9sNAHC32w0AcLfbDQB4vMs/FbFvJz3p/dfwcE
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <layer name="2" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt17ENgEAMBMEXAcHTf7/EX4FXMFOBpdUFXut/9vQBHK7pAzjo0aJHix4terTo0fJMH8DBPlr0aNGjRY8WPVr0aNGjRY8WPVr85y320aJHix4terTo0aJHix4terTo0eI/b7GPFj1a9GjRo0WPFj1a9GjRo0WPFv95i3206NGiR4seLXq06NGiR8s9fQAAAAAAAAAAAAAAAAAAAAAAAAAAAPBJL/yOAI0=
+  </data>
+ </layer>
+ <layer name="3" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0DEKACAMA8AKTvX//9UXKB1EkDvIlEyJAAAAAAAAAAAAAAAAAACAmr7SNhmH/tUub5wBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8ZwI4EgBk
+  </data>
+ </layer>
+ <layer name="4" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0DEKACAMA8AKLsX//1dfoEtFhDvIlEyJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACo01faJuPQv9rljTMAAAAAAAAAAAAAAAAAAAD40gStnABj
+  </data>
+ </layer>
+ <layer name="5" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1yEKwFAMBcFQqCi9/32rv6nNipkTBJYnMgMAAAAAAAAAAAAAAAAAAAAAAAAAMHNvH8Dh2j6Agx4terTo0aJHix4terS82wdwsI8WPVr0aNGjRY8WPVr0aNGjRY8W/3mLfbTo0aJHix4terTo0aJHix4terT4z1vso0WPFj1a9GjRo0WPFj1a9GjRo8V/3mIfLXq06NGiR4seLXq06NGiR4seLc/2AT8+r3sAkQ==
+  </data>
+ </layer>
+ <layer name="6" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1zEKhEAQRUEVFkHvf9+NJ1boJ1TB5B8eHcy2fdP+4F0DewEAAAAAAAAAAAAAAAAAAAAAAADgLb/pASyO6QEs9GjRo0WPFj1a9GjRo+WeHsDCfbTo0aJHix4terTo0aJHix4terT4n7e4jxY9WvRo0aNFjxY9WvRo0aNFjxb/8xb30aJHix4terTo0aJHix4terTo0eJ/3uI+WvRo0aNFjxY9WvRo0aNFjxY9Ws7pAQP+DE8AqA==
+  </data>
+ </layer>
+ <layer name="7" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0CEOACAMBMESRAX//y/8AExTxEyy7tRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABd8jQurYdNx24W/AEAAAAAAAAAAAAAAAAAAAA/2IGQAGE=
+  </data>
+ </layer>
+ <layer name="8" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0DEKACAMBMGITcD//1d/oE2IxQxsd9VFAAAAAAAAAAAAAAAAAABQKU/j0nrYdOxmwR8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC/28jDAGI=
+  </data>
+ </layer>
+ <layer name="9" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJACAAwDBx8P+TnT1ALJhcUOgYAAAAAAAAAAAAAAAAAADATfN1AAc/Wvxo8aPFjxY/Wvxo8aPFjxY/Wvxo8aPFjxY/WvxoWa8DAAAAAAAAAAAAAAAAAAAAAACAr2xXZAAl
+  </data>
+ </layer>
+ <layer name="10" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0aENADAIAEGC6P4jo7FUgLib4JOPAAAAAAAAAAAAAAAAAAAAJnI7gMaPW952AAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAhwJMZAAL
+  </data>
+ </layer>
+ <layer name="11" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="nopolygonhack" value="1"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt18EKhCAUBVChqXHq//+3hGkTDGqlwXAOuHm8hXg33hAAAAAAAAAAAAAAAAAAAAAA+CdxO3ODXc55b2cJ+XeO371P8xuRy0QW/e2ZDIf5K8jiKVPlHACSsXJOO/uf9tf/Sg/sJ9cvSjsj15V2PZn0kd65tOvV7AIAAAAAAAAAAAAAAAAAAAAAwJ1WY9ABlw==
+  </data>
+ </layer>
+ <layer name="12" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0aENADAMBLEooPuPXNrAojywJzjpqgAAAAAAAAAAAAAAAAAAgFdvBzD4kcWPLH5k8SOLH1nOdgAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8ugLBABM=
+  </data>
+ </layer>
+ <layer name="13" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0cEJADAMxLBQ6P4r950JcqHSBAZXAQAAAAAAAAAAAAAAAAAAAAAAAADsd6cDaM50AI0fWfzI4kcWP7L4AQAAAAAAAAAAAAAAAAAAAPzsAVOHABI=
+  </data>
+ </layer>
+ <layer name="14" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0cEJAEAIBDHxYf8l3/sqcJGkgoGpAgAAAAAAAAAAAAAAAAAALuvtAD5+ZPEjix9Z/MjiRxY/ssx2AAAAAAAAAAAAAAAAAAAAAAAAAAAAcNIDl9kAFQ==
+  </data>
+ </layer>
+ <layer name="15" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJADAQxLAjkP1XTv1lqr9CmsDgBAAAAAAAAAAAAAAAAAAAAAAAAAAgudsBDGc7gMGPLn508aOLH1386OIHAAAAAAAAAAAAAAAAAAAA8OMB4Z8AFA==
+  </data>
+ </layer>
+ <layer name="16" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0UEJACAAwEAR7F9ZfJrAIXcJBhsDAAAAAAAAAAAAAAAAAAAAAPjBeh3AZb4O4OJHix8tfrT40eJHix8tfrT40eJHix8tfrT40eJHix8AAAAAAAAAAAAAAAAAAADAsQEsQQAk
+  </data>
+ </layer>
+ <layer name="17" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJACAAwDBx8P+Tnd0cBDskFxQ6BgAAAAAAAAAAAAAAAAAAwL35O4CDHy1+tPjR4keLHy1+tPjR4keLHy1+tKzfAQAAAAAAAAAAAAAAAAAAAAAAAAA8twH+1wAd
+  </data>
+ </layer>
+ <layer name="18" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0UEJAAAIADER7F/ZtwkU2RIcXAQAAAAAAAAAAAAAAAAAAAAAAAAAAADcUNsBDLkdwODHLX4AAAAAAAAAAAAAAAAAAADAbw2BMQAM
+  </data>
+ </layer>
+ <layer name="19" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJADAMBDHjIvuPnDp9wA+WJji4KgAAAAAAAAAAAAAAAAAAgP96OoCHH1n8yOJHFj+y+JHlTAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAscgHrogAT
+  </data>
+ </layer>
+ <layer name="20" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJADAMBDETyP4rp0jlCfwGaYKDqwIAAAAAAAAAAAAAAAAAAAAAAAAAgO9OB9Cc6QAaP7L4kcWPLH5k8QMAAAAAAAAAAAAAAAAAAAB2ej2/ABI=
+  </data>
+ </layer>
+ <layer name="21" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw7EJAAAIA7D6/9Ne0FFwSCDJb3MQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACaBV3bABY=
+  </data>
+ </layer>
+ <layer name="22" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzrENAAAIw7Ai/v+ZC5gZsKXsSQAAgCu11JdTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADw3ACyNwAK
+  </data>
+ </layer>
+ <layer name="23" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw7EJAAAIAKCC/r+5HmhqChSMAAAAvqmZSwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4KYBQPYACw==
+  </data>
+ </layer>
+ <layer name="24" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzrENAAAEAEFi/53NoKFwl3z/EQAAAAAAAPBXDqqjRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgVwOqKQAP
+  </data>
+ </layer>
+ <layer name="25" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw6EJAAAIADAF/79Zo90kbLAIAAAAAAAA4KJmrgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAbw0h+AAI
+  </data>
+ </layer>
+ <layer name="26" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw7EJAAAIA7AK/n+z/uDikEASAAAAAAAAAAAAAPildx0CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXAwEuwAU
+  </data>
+ </layer>
+ <layer name="27" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAMA6Am8+95fw30AQUkAAAAAAAAAAAAALBz6wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAefCfAAQ=
+  </data>
+ </layer>
+ <layer name="28" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt17EJADEMBEHjyPD99/uxKtAGMxUIlgt0TtfbPoDhbh/AoEeLHi16tOjRokfLt30Ag3206NGiR4seLXq06NGiR4seLXq0+M9b7KNFjxY9WvRo0aNFjxY9WvRo0aPFf95iHy16tOjRokeLHi16tOjRokeLHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANT9voYAbA==
+  </data>
+ </layer>
+ <layer name="29" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJACAQwMDH/Ye2trE14N0EgcwAAAAAAAAAAAAAAAAAAMA/1usADn60+NHiR4sfLX60+NHiR4sfLX60+NHiR4sfLX60+NHiR4sfLX60+NHiR4sfAAAAAAAAAAAAAAAAAAAAAHcb8YMAKw==
+  </data>
+ </layer>
+ <layer name="30" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0TENADAMwLBq/EHvLoEth40gUmYAAAAAAAAAAAAAAAAAAADeO78DWPxo8aPFjxY/Wvxo8aPFjxY/Wvxo8aPFjxY/Wvxo8aPFjxY/Wvxo8aPFjxY/AAAAAAAAAAAAAAAAAAAAoOkCsIsAKw==
+  </data>
+ </layer>
+ <layer name="31" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0cEJACAQwDAR3H9l3zeBRZIJCl0LAAAAAAAAAAAAAAAAAAAAAAAoO68DGPbrAAY/Wvxo8aPFjxY/Wvxo8aPFjxY/Wvxo8QMAAAAAAAAAAAAAAAAAAAD40QUvSwAe
+  </data>
+ </layer>
+ <layer name="32" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzrEJAAAIwDDF/3/2CAdFEujeCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4KocVAu/AAAAAAAAAAAAAADwQQP2tQAT
+  </data>
+ </layer>
+ <layer name="33" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw7EJAAAIAKCC/r+5TghaGhSMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK5q5jIAAAAAAAAA8FsDW/IADw==
+  </data>
+ </layer>
+ <layer name="34" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzqENAAAIwDAI//+MxWDBtMn8IgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBNjur5BQAAAAAAAAC40V0/AAc=
+  </data>
+ </layer>
+ <layer name="35" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzrEJAAAIwDDF/3/2AmdFEujeCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC4K4dqcwoAAAB4rQEw2wAK
+  </data>
+ </layer>
+ <layer name="36" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0aENACAQwMAPgv1HRiNRVNxN0KQzAAAAAAAAAAAAAAAAAABAwfodwMWPFj9a/Gjxo8WPFj9a9u8AAAAAAAAAAAAAAAAAAAAAAAAAAACABweeuQAV
+  </data>
+ </layer>
+ <layer name="37" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw7EJAAAIA7D6/9Ne0FFwSCAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0c/CzBayoABY=
+  </data>
+ </layer>
+ <layer name="38" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw4EJAAAEADDK/zfzAAdoq0UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwD81cwkAAABwaT9rAAs=
+  </data>
+ </layer>
+ <layer name="39" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7Ad+NeMjIXQKmgCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8Me0AAAAAAAAAAAAAAAAcsFpPAAU=
+  </data>
+ </layer>
+ <layer name="40" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7A9+LeMhh2Ep1XQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuzXcAAAAAAAAAAAAAAAAAAAAAoLDiKwAG
+  </data>
+ </layer>
+ <layer name="41" width="100" height="100">
+  <properties>
+   <property name="height" value="80"/>
+   <property name="width" value="80"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAIwKBd9o9sDD0gAQUAAAAAAAAAAAAAAAAAAFBzHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgCcW2vYABw==
   </data>
  </layer>
 </map>
