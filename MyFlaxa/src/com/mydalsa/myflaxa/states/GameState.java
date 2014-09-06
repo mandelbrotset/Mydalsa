@@ -173,7 +173,7 @@ public class GameState extends State {
 		float tileWidth = layer.getTileWidth();
 		
 		float realHeight = Float.parseFloat((String) layer.getProperties().get("height"));
-		float realWidth = Float.parseFloat((String) layer.getProperties().get("witdh"));
+		float realWidth = Float.parseFloat((String) layer.getProperties().get("width"));
 		
 		middle = tileHeight * layer.getHeight() / PPM / 2;
 		lowest = Float.MAX_VALUE;
