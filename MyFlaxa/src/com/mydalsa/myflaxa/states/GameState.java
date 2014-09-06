@@ -43,7 +43,7 @@ public class GameState extends State {
 	public static final float JUMP_VELOCITY = 1.7f;
 	public static final float STATIC_VELOCITY = 0.5f;
 	public static final float BIRD_GRAVITY_SCALE = 0.5f;
-
+	public static final float xStart = 0.3f;
 	private boolean goingDown;
 	private boolean goingUp;
 	private boolean goingLeft;
@@ -71,7 +71,9 @@ public class GameState extends State {
 	private boolean isDead;
 
 	private float birdVelocity;
+	
 
+	
 	public GameState(MyFlaxaGame game) {
 		super(game);
 		isDead = false;
@@ -206,7 +208,7 @@ public class GameState extends State {
 		FixtureDef fixtDef = new FixtureDef();
 
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(new Vector2(0, middle));
+		bodyDef.position.set(new Vector2(xStart, middle));
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(BIRD_WIDTH / 2, BIRD_HEIGHT / 2);
 		fixtDef.shape = shape;
@@ -287,7 +289,7 @@ public class GameState extends State {
 		
 		if(isDead){
 			
-			body.setTransform(new Vector2(0, middle), 0);
+			body.setTransform(new Vector2(xStart, middle), 0);
 			birdVelocity = STATIC_VELOCITY;
 			body.setLinearVelocity(birdVelocity, 0.0f);
 			body.setAngularVelocity(0);
@@ -322,28 +324,28 @@ public class GameState extends State {
 			if(goingLeft)
 				body.setAngularVelocity(-7f);
 		}
-		if (goingRight && goingUp && body.getAngle() > Math.PI / 4) {
+		if (goingRight && goingUp && body.getAngle() > Math.PI / 2) {
 			body.setAngularVelocity(0);
 			body.setTransform(body.getPosition().x, body.getPosition().y,
-					(float) (Math.PI / 4f));
+					(float) (Math.PI / 2f));
 
 		}
-		if (goingRight && goingDown && body.getAngle() < -Math.PI / 4) {
+		if (goingRight && goingDown && body.getAngle() < -Math.PI / 2) {
 			body.setAngularVelocity(0);
 			body.setTransform(body.getPosition().x, body.getPosition().y,
-					(float) (-Math.PI / 4f));
+					(float) (-Math.PI / 2f));
 		}
 		
-		if (goingLeft && goingUp && body.getAngle() < -Math.PI / 4) {
+		if (goingLeft && goingUp && body.getAngle() < -Math.PI / 2) {
 			body.setAngularVelocity(0);
 			body.setTransform(body.getPosition().x, body.getPosition().y,
-					(float) (-Math.PI / 4f));
+					(float) (-Math.PI / 2f));
 
 		}
-		if (goingLeft && goingDown && body.getAngle() > Math.PI / 4) {
+		if (goingLeft && goingDown && body.getAngle() > Math.PI / 2) {
 			body.setAngularVelocity(0);
 			body.setTransform(body.getPosition().x, body.getPosition().y,
-					(float) (Math.PI / 4f));
+					(float) (Math.PI / 2f));
 		}
 
 
