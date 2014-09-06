@@ -22,7 +22,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mydalsa.myflaxa.MyFlaxaGame;
@@ -39,12 +43,12 @@ public class GameState extends State {
 	public static final float JUMP_VELOCITY = 1.7f;
 	public static final float STATIC_VELOCITY = 0.5f;
 	public static final float BIRD_GRAVITY_SCALE = 0.5f;
-	
+
 	private boolean goingDown;
 	private boolean goingUp;
 	private boolean goingLeft;
 	private boolean goingRight;
-	
+
 	private SpriteBatch batch;
 
 	private boolean debug = true;
@@ -64,17 +68,19 @@ public class GameState extends State {
 	private int zoom;
 	private boolean firstKey;
 	
+	private boolean isDead;
+
 	private float birdVelocity;
-	
+
 	public GameState(MyFlaxaGame game) {
 		super(game);
-		
+		isDead = false;
 		birdVelocity = 0;
 		zoom = 1;
-		
+
 		goingDown = false;
 		goingUp = false;
-		
+		goingRight = true;
 		firstKey = true;
 		batch = game.getSpriteBatch();
 		cam = game.getCamera();
@@ -91,6 +97,43 @@ public class GameState extends State {
 		createPlayer();
 
 		createGround();
+
+		world.setContactListener(new ContactListener() {
+
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+
+			}
+
+			@Override
+			public void endContact(Contact contact) {
+				// System.out.println("End contact" +
+				// body.getLinearVelocity().x);
+			}
+
+			@Override
+			public void beginContact(Contact contact) {
+				isDead = true;
+				/*
+				// System.out.println("Begin contact" +
+				// body.getLinearVelocity().x);
+				if (contact.getFixtureA().isSensor()) {
+					birdVelocity = -birdVelocity;
+					System.out.println("SENSOR");
+				}
+
+				if (contact.getFixtureB().isSensor()) {
+					birdVelocity = -birdVelocity;
+					System.out.println("SENSOR");
+				} */
+			}
+		});
 
 		// set up debug matrix
 		debugMatrix = new Matrix4(cam.combined);
@@ -167,7 +210,7 @@ public class GameState extends State {
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(BIRD_WIDTH / 2, BIRD_HEIGHT / 2);
 		fixtDef.shape = shape;
-		fixtDef.restitution = 0.0f;
+		fixtDef.restitution = 0.8f;
 		fixtDef.density = BIRD_WEIGHT / (BIRD_HEIGHT * BIRD_WEIGHT);
 		bodyDef.active = true;
 
@@ -175,7 +218,20 @@ public class GameState extends State {
 
 		body.setGravityScale(0f);
 		body.createFixture(fixtDef);
+
+		fixtDef.isSensor = true;
+		shape.setAsBox(BIRD_WIDTH / 5, BIRD_HEIGHT / 12, new Vector2(
+				BIRD_WIDTH / 2, 0), 0);
+		fixtDef.shape = shape;
+		body.createFixture(fixtDef).setUserData("beakRight");
+		
+		shape.setAsBox(BIRD_WIDTH / 5, BIRD_HEIGHT / 12, new Vector2(-BIRD_WIDTH / 2,0),0);
+		fixtDef.shape = shape;
+		body.createFixture(fixtDef).setUserData("beakLeft");
+
+		
 		body.setLinearVelocity(birdVelocity, 0);
+		
 		player = new Sprite(body);
 		shape.dispose();
 	}
@@ -202,6 +258,9 @@ public class GameState extends State {
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			eye.add(0f, -10f, 0.0f);
 		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
+			birdVelocity = -birdVelocity;
+		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			if (firstKey) {
 				firstKey = false;
@@ -226,44 +285,71 @@ public class GameState extends State {
 
 	@Override
 	public void update(float dt) {
-		// System.out.println(body.getPosition().x + ", " +
-		// body.getPosition().y);
-		handleInput();
 		
-		if(body.getLinearVelocity().x < -0.01){
+		if(isDead){
+			
+			body.setTransform(new Vector2(0, middle), 0);
+			birdVelocity = STATIC_VELOCITY;
+			body.setLinearVelocity(birdVelocity, 0.0f);
+			body.setAngularVelocity(0);
+			isDead = false;
+			return;
+		}
+		
+		handleInput();
+
+		if (goingRight && body.getLinearVelocity().x < -0.01) {
 			goingLeft = true;
 			goingRight = false;
-		}if(body.getLinearVelocity().x > 0.01){
+		}
+		if (goingLeft && body.getLinearVelocity().x > 0.01) {
 			goingLeft = false;
 			goingRight = true;
 		}
 
-		if(body.getLinearVelocity().y < -0.01 && !goingDown){
+		if (body.getLinearVelocity().y < -0.01 && !goingDown) {
 			goingDown = true;
 			goingUp = false;
-			body.setAngularVelocity(-7f);
+			if(goingRight)
+				body.setAngularVelocity(-7f);
+			if(goingLeft)
+				body.setAngularVelocity(7f);
 
-		}else if(body.getLinearVelocity().y > 0.01 && !goingUp){
+		} else if (body.getLinearVelocity().y > 0.01 && !goingUp) {
 			goingUp = true;
 			goingDown = false;
-
-			body.setAngularVelocity(7f);
-
+			if(goingRight)
+				body.setAngularVelocity(7f);
+			if(goingLeft)
+				body.setAngularVelocity(-7f);
 		}
-		if(goingUp && body.getAngle() > Math.PI/4){
+		if (goingRight && goingUp && body.getAngle() > Math.PI / 4) {
 			body.setAngularVelocity(0);
-			body.setTransform(body.getPosition().x, body.getPosition().y, (float) (Math.PI/4f));
+			body.setTransform(body.getPosition().x, body.getPosition().y,
+					(float) (Math.PI / 4f));
 
 		}
-		if(goingDown && body.getAngle() < -Math.PI/4){
+		if (goingRight && goingDown && body.getAngle() < -Math.PI / 4) {
 			body.setAngularVelocity(0);
-			body.setTransform(body.getPosition().x, body.getPosition().y, (float) (-Math.PI/4f));
+			body.setTransform(body.getPosition().x, body.getPosition().y,
+					(float) (-Math.PI / 4f));
 		}
+		
+		if (goingLeft && goingUp && body.getAngle() < -Math.PI / 4) {
+			body.setAngularVelocity(0);
+			body.setTransform(body.getPosition().x, body.getPosition().y,
+					(float) (-Math.PI / 4f));
+
+		}
+		if (goingLeft && goingDown && body.getAngle() > Math.PI / 4) {
+			body.setAngularVelocity(0);
+			body.setTransform(body.getPosition().x, body.getPosition().y,
+					(float) (Math.PI / 4f));
+		}
+
 
 		if (birdVelocity != 0.0f) {
-			if (body.getLinearVelocity().x < birdVelocity)
-				body.setLinearVelocity(birdVelocity,
-						body.getLinearVelocity().y);
+			body.setLinearVelocity(birdVelocity, body.getLinearVelocity().y);
 		}
 		world.step(dt, 6, 2);
 	}
