@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="50" height="20" tilewidth="100" tileheight="100">
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="pipes" tilewidth="100" tileheight="100">
   <image source="pipes.png" width="1100" height="100"/>
  </tileset>
- <layer name="pipes" width="50" height="20">
+ <layer name="pipes" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJztl0kOgDAIRauJ8/3vq90ZQoEyGDH+hIXFUp8lv1oKrvWKAcTBXLfG7rE31quaiVzVyOSlc+CY5B6PZ7HM/TIH3PesHFBYP1s4JsV6nLTvzcJh2auWNOxVb+PQKgMH7F+snzNwRPvuz9EnDw7KP7i5nC9L5cHRU9+zNlVHcuZb6vfmMUm8yLufIzi034mcqB7PxGHxqyc5OE/JwhF5fmg4lhLzX7sFcZwO3AGE
+   eJztne1SgzAQALFWrfb931cZZUYZyR00TZayO8MvruFjSXNHCh0GLpev5ekOy0fLg3ggTjtr99HRBwt9sNAHC32w0AeL67Ccsz4Hnz0XPnu90/4+OvYPFvpgoQ8W+mChDxb6YKEPFvpgoQ8Wpfp8Tc0+r9Wtz7dh/2ChDxb6YKEPFvpgoQ8W+mChDxb6YDHW0f/V3KW58cxifb4N+wcLfbDQBwt9sNAHC32w0AcLfbA4oo/MM5PZeezWcdn58t77mY0bnzPNXCvZ66lX3Fqy7b5Wbi+KOyXbOqqP2u219tH6etrKUXxk0cfy+r35GPOP7PsVlmJJxzNfvzcfb8N3nhI5ufzEvd+w/ZdkXGsf2XEhy637Hzkpuaix/a1x0XnM+qhNjf2fnMxrkPNQdhG1+5vW41xtH7X7d8TSea3Vn/fuo3feVBt9sNAHi9p1cGZ7e/axNF5lx7GI1tcN3UfpvE457VJ+VapPWucdWbI+WtdFUVxUX0T1Sa/v1eg89rq/e0v+H7mYKDnp5YN6vz3L0v2SyEUUSzqe+fq9+WjZbuv7XPpgxemDFdfLR+98k+xjHPNov7M46u9LsnlKL3r3D/mLPljog4U+WOiDhT5Y6IOFPljog8Xa9ydm6vdp/lDWY/9goQ8W+mChDxb6YKEPFvpgoQ8W+mAxr89L/zm45p2K1ufbsH+w0AcLfbDQBwt9sNAHC32w0AcLfbAozZ+XavWRUr1ufb4N+wcLfbDQBwt9sNAHC32w0AcLfbDQB4vMs/FbFvJz3p/dfwcE
   </data>
  </layer>
 </map>

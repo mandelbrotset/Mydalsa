@@ -215,7 +215,6 @@ public class GameState extends State {
 		bodyDef.active = true;
 
 		body = world.createBody(bodyDef);
-
 		body.setGravityScale(0f);
 		body.createFixture(fixtDef);
 
