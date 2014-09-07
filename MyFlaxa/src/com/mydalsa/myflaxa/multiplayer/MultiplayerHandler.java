@@ -1,5 +1,8 @@
 package com.mydalsa.myflaxa.multiplayer;
 
+import com.mydalsa.myflaxa.multiplayer.client.Client;
+import com.mydalsa.myflaxa.multiplayer.server.Server;
+
 import tcp.client.TCPClient;
 import tcp.server.TCPClientHolder;
 import tcp.server.TCPServer;
@@ -13,9 +16,9 @@ public class MultiplayerHandler {
 	
 	public MultiplayerHandler(boolean server) {
 		if (server) {
-			ServerHandler sh = new ServerHandler();
+			Server sh = new Server();
 		} else {
-			ClientHandler ch = new ClientHandler(null,0);
+			Client c = new Client();
 		}
 	}
 	

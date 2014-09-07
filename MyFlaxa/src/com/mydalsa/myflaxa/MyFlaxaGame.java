@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mydalsa.myflaxa.handlers.Content;
 import com.mydalsa.myflaxa.handlers.StateHandler;
 import com.mydalsa.myflaxa.multiplayer.MultiplayerHandler;
-import com.mydalsa.myflaxa.multiplayer.PackageReceiverImpl;
+import com.mydalsa.myflaxa.multiplayer.server.PackageReceiverImpl;
 
 public class MyFlaxaGame extends ApplicationAdapter {
 	

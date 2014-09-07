@@ -11,10 +11,6 @@ import util.client.Client;
 public abstract class UDPClient extends Client<Message> {
 	private DatagramSocket socket;
 
-	public UDPClient(InetAddress ip, int port) {
-		super(ip, port);
-	}
-
 	@Override
 	public boolean connectToServer(InetAddress ip, int port) {
 		throw new NotImplementedException();
