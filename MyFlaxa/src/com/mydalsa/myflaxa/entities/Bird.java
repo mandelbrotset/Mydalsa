@@ -21,10 +21,11 @@ public class Bird extends Sprite {
 	private boolean goingRight;
 	private boolean goingDown;
 	private boolean goingUp;
+	private boolean isLocked;
 
-	public Bird(Vector2 startPosition, World world, boolean initiallyLocked) {
-		super(initiallyLocked);
-			
+	public Bird(Vector2 startPosition, World world, boolean initiallyLocked, int id) {
+		super(id);
+		isLocked = initiallyLocked;
 		createBody(startPosition, world);
 		
 		if(!initiallyLocked){
@@ -172,8 +173,8 @@ public class Bird extends Sprite {
 	}
 	
 	public void flyUp(){
-		if (isLocked()) {
-			unLock();
+		if (isLocked) {
+			isLocked = false;
 			body.setGravityScale(Constants.BIRD_GRAVITY_SCALE);
 			body.setLinearVelocity(Constants.START_VELOCITY, body.getLinearVelocity().y);
 		}

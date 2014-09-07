@@ -88,7 +88,7 @@ public class GameState extends State {
 	private void addSomeRandomBirds(int i){
 		Random r = new Random();
 		for(int x = 0; x<i; x++)
-			addSprite(new Bird(new Vector2(Constants.X_START + r.nextFloat() + r.nextInt(i), middle), world, false));
+			addSprite(new Bird(new Vector2(Constants.X_START + r.nextFloat() + r.nextInt(i), middle), world, false, IDGenerator.getNewID()));
 	}
 
 
