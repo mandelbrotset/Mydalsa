@@ -1,5 +1,7 @@
 package com.mydalsa.myflaxa.multiplayer;
 
+import com.mydalsa.myflaxa.multiplayer.server.PackageReceiverImpl;
+
 import tcp.server.TCPServer;
 
 public class Test {

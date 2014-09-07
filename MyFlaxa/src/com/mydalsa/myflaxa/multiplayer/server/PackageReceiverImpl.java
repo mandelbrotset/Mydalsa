@@ -1,4 +1,4 @@
-package com.mydalsa.myflaxa.multiplayer;
+package com.mydalsa.myflaxa.multiplayer.server;
 
 import Logging.Logger;
 import tcp.TCPObjectReceiver;
@@ -10,6 +10,9 @@ public class PackageReceiverImpl extends TCPObjectReceiver {
 	protected void packetReceived(Object packet, ClientHolder<Object> fromClient) {
 		
 		Logger.getInstance().write("package received");
+		
 	}
+	
+	
 	
 }

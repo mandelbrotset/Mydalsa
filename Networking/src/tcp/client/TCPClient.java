@@ -13,9 +13,6 @@ public abstract class TCPClient extends Client<Object> {
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
 	
-	public TCPClient(InetAddress ip, int port) {
-		super(ip, port);
-	}
 
 	@Override
 	public boolean connectToServer(InetAddress ip, int port) throws IOException {
@@ -24,9 +21,13 @@ public abstract class TCPClient extends Client<Object> {
 		return false;
 	}
 
+	/**
+	 * Writes an object to the server.
+	 */
 	@Override
 	public void write(Object packet) throws IOException {
 		outputStream.writeObject(packet);
+		outputStream.flush();
 	}
 	
 	private void createInputStream() throws IOException {

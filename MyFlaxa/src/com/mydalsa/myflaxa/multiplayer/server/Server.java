@@ -1,10 +1,10 @@
-package com.mydalsa.myflaxa.multiplayer;
+package com.mydalsa.myflaxa.multiplayer.server;
 
 import java.util.HashMap;
 
 import tcp.server.TCPServer;
 
-public class ServerHandler {
+public class Server {
 	
 	private TCPServer server;
 	private HashMap<Integer, ConnectedClient> clients;
