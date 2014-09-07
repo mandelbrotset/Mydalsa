@@ -7,7 +7,9 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -46,7 +48,7 @@ public class GameState extends State {
 	public static final float BIRD_WIDTH = 0.05f;
 
 	public static final float JUMP_VELOCITY = 1.7f;
-	public static final float START_FORCE = 1f;
+	public static final float START_VELOCITY = 1.2f;
 	public static final float BIRD_GRAVITY_SCALE = 0.5f;
 	public static final float xStart = 0.3f;
 
@@ -75,6 +77,7 @@ public class GameState extends State {
 	private boolean firstKey;
 
 	private boolean isDead;
+	private OrthographicCamera backgroundCam;
 
 	public GameState(MyFlaxaGame game) {
 		super(game);
@@ -86,11 +89,14 @@ public class GameState extends State {
 		firstKey = true;
 		batch = game.getSpriteBatch();
 		cam = game.getCamera();
+		backgroundCam = new OrthographicCamera();
+		backgroundCam.setToOrtho(false, cam.viewportWidth*2, cam.viewportHeight*2);
 
 		// set up box2d stuff
 		world = new World(new Vector2(0, GRAVITY), true);
 		World.setVelocityThreshold(0);
 		b2dr = new Box2DDebugRenderer();
+		
 
 		// create tiles
 		loadTiles();
@@ -372,35 +378,24 @@ public class GameState extends State {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {
 			zoom++;
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.PLUS)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.PLUS) || Gdx.input.isKeyJustPressed(Input.Keys.I)) {
 			if (zoom > 0) {
 				zoom--;
 			}
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			eye.add(-10f, 0f, 0.0f);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			eye.add(10f, 0f, 0.0f);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			eye.add(0f, 10f, 0.0f);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			eye.add(0f, -10f, 0.0f);
-		}
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
 			if(goingRight)
-				body.applyForceToCenter(new Vector2(-START_FORCE*2, 0), true);
+				body.setLinearVelocity(-START_VELOCITY, body.getLinearVelocity().y);
 			if(goingLeft)
-				body.applyForceToCenter(new Vector2(START_FORCE*2, 0), true);
+				body.setLinearVelocity(START_VELOCITY, body.getLinearVelocity().y);
 				
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			if (firstKey) {
 				firstKey = false;
 				body.setGravityScale(BIRD_GRAVITY_SCALE);
-				body.applyForceToCenter(new Vector2(START_FORCE, 0), true);
+				body.setLinearVelocity(START_VELOCITY, body.getLinearVelocity().y);
 			}
 			
 			body.setLinearVelocity(body.getLinearVelocity().x, JUMP_VELOCITY);
@@ -408,12 +403,7 @@ public class GameState extends State {
 			// body.getPosition().y, true);
 			// body.applyForceToCenter(0.0f, JUMP_FORCE, true);
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			body.applyForceToCenter(2.0f, 0.0f, true);
-		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			body.applyForceToCenter(-2.0f, 0.0f, true);
-		}
+
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			System.exit(0);
 		}
@@ -445,17 +435,17 @@ public class GameState extends State {
 			goingDown = true;
 			goingUp = false;
 			if (goingRight)
-				body.setAngularVelocity(-7f);
+				body.setAngularVelocity(-4f);
 			if (goingLeft)
-				body.setAngularVelocity(7f);
+				body.setAngularVelocity(4f);
 
 		} else if (body.getLinearVelocity().y > 0.01 && !goingUp) {
 			goingUp = true;
 			goingDown = false;
 			if (goingRight)
-				body.setAngularVelocity(7f);
+				body.setAngularVelocity(4f);
 			if (goingLeft)
-				body.setAngularVelocity(-7f);
+				body.setAngularVelocity(-4f);
 		}
 		if (goingRight && goingUp && body.getAngle() > Math.PI / 4) {
 			body.setAngularVelocity(0);
@@ -480,6 +470,14 @@ public class GameState extends State {
 			body.setTransform(body.getPosition().x, body.getPosition().y,
 					(float) (Math.PI / 4f));
 		}
+		
+		if(body.getLinearVelocity().x > START_VELOCITY)
+			body.setLinearVelocity(START_VELOCITY, body.getLinearVelocity().y);
+		if(body.getLinearVelocity().x < -START_VELOCITY)
+			body.setLinearVelocity(-START_VELOCITY, body.getLinearVelocity().y);
+		if(body.getLinearVelocity().y > JUMP_VELOCITY*2)
+			body.setLinearVelocity(body.getLinearVelocity().x, JUMP_VELOCITY*2);
+
 
 		world.step(dt, 6, 2);
 	}
@@ -489,7 +487,7 @@ public class GameState extends State {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		
 		eye = new Vector3(body.getPosition().x * PPM, body.getPosition().y
 				* PPM, 0f);
 
@@ -497,7 +495,17 @@ public class GameState extends State {
 		cam.zoom = zoom;
 		cam.update();
 		
+		
+		backgroundCam.position.set(eye);
+		cam.update();
+		batch.setProjectionMatrix(backgroundCam.combined);
+		Texture t = MyFlaxaGame.getRes().getTexture("sky");
+		batch.begin();
+		batch.draw(t, 0, 0, t.getWidth()*4, t.getHeight()*4);
+		batch.end();
+		
 		batch.setProjectionMatrix(cam.combined);
+
 		player.render(batch, PPM, goingLeft);
 		// draw box2dworld
 		

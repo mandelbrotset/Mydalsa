@@ -12,7 +12,7 @@ public class Bird extends Sprite {
 		super(body);
 		Content res = MyFlaxaGame.getRes();
 		Texture tex = res.getTexture("flax");
-		TextureRegion[] sprites = TextureRegion.split(tex, 50, 50)[0];
+		TextureRegion[] sprites = TextureRegion.split(tex, 100, 100)[0];
 
 		setAnimation(sprites, 1 / 48f);
 	}

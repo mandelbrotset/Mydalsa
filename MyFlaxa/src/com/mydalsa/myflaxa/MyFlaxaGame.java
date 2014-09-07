@@ -29,7 +29,8 @@ public class MyFlaxaGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		res = new Content();
-		res.loadTexture("res/flax_50.png", "flax");
+		res.loadTexture("res/flax_100.png", "flax");
+		res.loadTexture("res/sky.jpg", "sky");
 		Gdx.graphics.setDisplayMode(V_WIDTH, V_HEIGHT, false);
 		batch = new SpriteBatch();
 		Gdx.graphics.setTitle(TITlE);
