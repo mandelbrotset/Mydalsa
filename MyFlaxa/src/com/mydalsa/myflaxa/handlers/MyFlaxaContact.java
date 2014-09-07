@@ -1,4 +1,4 @@
-package com.mydalsa.myflaxa;
+package com.mydalsa.myflaxa.handlers;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -31,7 +31,7 @@ public class MyFlaxaContact implements ContactListener  {
 
 	@Override
 	public void beginContact(Contact contact) {
-		game.isDead = true;
+		//game.isDead = true;
 		/*
 		// System.out.println("Begin contact" +
 		// body.getLinearVelocity().x);
