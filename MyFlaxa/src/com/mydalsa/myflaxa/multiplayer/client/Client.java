@@ -14,16 +14,23 @@ public class Client extends TCPClient {
 	}
 	
 	public MultiplayerSpriteList getList() {
-		return list;
+		synchronized (list) {
+			return list;
+		}
 	}
+	
 	public void setList(MultiplayerSpriteList list) {
-		this.list = list;
+		synchronized (list) {
+			this.list = list; // om allt låser sig, tänk här
+		}
 	}
 
 	@Override
 	protected void packetReceived(Object packet) {
 		if(packet instanceof MultiplayerSpriteList){
-			list = (MultiplayerSpriteList) packet;
+			synchronized (list) {
+				list = (MultiplayerSpriteList) packet; // och här. Hur blir det när man assignar i en låsning??
+			}
 		}
 	}
 }
