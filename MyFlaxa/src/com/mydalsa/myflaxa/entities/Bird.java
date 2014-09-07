@@ -23,7 +23,7 @@ public class Bird extends Sprite {
 	private boolean goingUp;
 	private boolean isLocked;
 
-	public Bird(Vector2 startPosition, World world, boolean initiallyLocked, int id) {
+	public Bird(Vector2 startPosition, World world, boolean initiallyLocked, long id) {
 		super(id);
 		isLocked = initiallyLocked;
 		createBody(startPosition, world);

@@ -20,6 +20,10 @@ public class MultiplayerSpriteList implements Serializable {
 		set = new HashSet<MultiplayerSprite>();
 	}
 	
+	public HashSet<MultiplayerSprite> getSprites() {
+		return set;
+	}
+	
 	public void addSprite(Sprite sprite){
 		long id = sprite.getId();
 		Vector2 position = sprite.getPosition();

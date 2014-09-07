@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import general.IDGenerator;
 
@@ -23,6 +23,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -34,6 +35,8 @@ import com.mydalsa.myflaxa.MyFlaxaGame;
 import com.mydalsa.myflaxa.entities.Bird;
 import com.mydalsa.myflaxa.entities.Player;
 import com.mydalsa.myflaxa.entities.Sprite;
+import com.mydalsa.myflaxa.multiplayer.MultiplayerSprite;
+import com.mydalsa.myflaxa.multiplayer.client.Client;
 import com.mydalsa.myflaxa.util.Constants;
 
 public class GameState extends State {
@@ -59,17 +62,20 @@ public class GameState extends State {
 	private int zoom;
 	
 	private boolean isClient;
-	private boolean isServer;
-	
-	private LinkedBlockingQueue<Sprite> sprites;
+	private Client client;
 
-	public GameState(MyFlaxaGame game, boolean isClient, boolean isServer) {
+	
+	private ConcurrentHashMap<Long, Sprite> sprites;
+
+	public GameState(MyFlaxaGame game, Client client) {
 		super(game);
 		
-		this.isClient = isClient;
-		this.isServer = isServer;
+		if(client != null)
+			isClient = true;
+		this.client = client;
+		
 		zoom = 1;
-		sprites = new LinkedBlockingQueue<Sprite>();
+		sprites = new ConcurrentHashMap<Long, Sprite>();
 		batch = game.getSpriteBatch();
 		cam = game.getCamera();
 		backgroundCam = new OrthographicCamera();
@@ -296,7 +302,7 @@ public class GameState extends State {
 		
 		handleInput();
 
-		for(Sprite sprite : sprites)
+		for(Sprite sprite : sprites.values())
 			sprite.update(dt);
 
 		world.step(dt, 6, 2);
@@ -306,13 +312,30 @@ public class GameState extends State {
 	}
 
 	private void updateSpriteList() {
-		// TODO Auto-generated method stub
-		
+		for(Sprite s : sprites.values())
+			client.getList().addSprite(s);
 	}
 
 	private void syncSpriteList() {
-		// TODO Auto-generated method stub
-		
+		for(MultiplayerSprite mulSprite : client.getList().getSprites()){
+			Sprite s = sprites.get(mulSprite.getId());
+			if(s == null){
+				s = createSprite(mulSprite);
+			}
+			updateBody(s.getBody(), mulSprite);
+		}
+	}
+
+	private Sprite createSprite(MultiplayerSprite mulSprite) {
+		Bird b = new Bird(mulSprite.getPosition(), world, false, mulSprite.getId());
+		addSprite(b);
+		return b;
+	}
+	
+	private void updateBody(Body body, MultiplayerSprite mSprite){
+		body.setTransform(mSprite.getPosition(), mSprite.getAngle());
+		body.setLinearVelocity(mSprite.getVelocity());
+		body.setAngularVelocity(mSprite.getAngle());
 	}
 
 	@Override
@@ -340,7 +363,7 @@ public class GameState extends State {
 		batch.setProjectionMatrix(cam.combined);
 		
 		//Render sprites
-		for(Sprite sprite : sprites){
+		for(Sprite sprite : sprites.values()){
 			sprite.render(batch);
 		}
 		
@@ -365,7 +388,7 @@ public class GameState extends State {
 	}
 	
 	public void addSprite(Sprite sprite){
-		sprites.offer(sprite);
+		sprites.put(sprite.getId(), sprite);
 	}
 
 }

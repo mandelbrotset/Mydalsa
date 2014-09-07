@@ -14,7 +14,7 @@ public abstract class Sprite {
 	protected float height;
 	protected Animation animation;
 	private long id;
-	public Sprite(int id){
+	public Sprite(long id){
 		animation = new Animation();
 		this.id = id;
 	}
