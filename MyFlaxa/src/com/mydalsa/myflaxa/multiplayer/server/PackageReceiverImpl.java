@@ -1,5 +1,8 @@
 package com.mydalsa.myflaxa.multiplayer.server;
 
+import com.mydalsa.myflaxa.multiplayer.MultiplayerSprite;
+import com.mydalsa.myflaxa.multiplayer.MultiplayerSpriteList;
+
 import Logging.LogLevel;
 import Logging.Logger;
 import tcp.TCPObjectReceiver;
@@ -17,7 +20,12 @@ public class PackageReceiverImpl extends TCPObjectReceiver {
 	@Override
 	protected void packetReceived(Object packet, ClientHolder<Object> fromClient) {
 		TCPClientHolder tch = (TCPClientHolder) fromClient;
-		
+		if (packet instanceof MultiplayerSprite) {
+			
+			Logger.getInstance().write("sprite received");
+		} else if (packet instanceof MultiplayerSpriteList) {
+			Logger.getInstance().write("spritelist received");
+		}
 		Logger.getInstance().write("package received");
 		
 	}
