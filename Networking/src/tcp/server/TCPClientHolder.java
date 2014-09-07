@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import tcp.TCPObjectReceiver;
 import util.PacketReceiver;
 import util.server.ClientHolder;
 
@@ -18,7 +19,7 @@ public class TCPClientHolder extends ClientHolder<Object> {
 	private ObjectInputStream inputStream;
 	private int id;
 	
-	public TCPClientHolder(Socket socket, PacketReceiver<Object> objectReceiver) throws IOException {
+	public TCPClientHolder(Socket socket, TCPObjectReceiver objectReceiver) throws IOException {
 		id = general.IDGenerator.getNewID();
 		this.socket = socket;
 		this.objectReceiver = objectReceiver;
