@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import general.IDGenerator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -56,11 +58,16 @@ public class GameState extends State {
 	private Vector3 eye;
 	private int zoom;
 	
+	private boolean isClient;
+	private boolean isServer;
+	
 	private LinkedBlockingQueue<Sprite> sprites;
 
-	public GameState(MyFlaxaGame game) {
+	public GameState(MyFlaxaGame game, boolean isClient, boolean isServer) {
 		super(game);
-
+		
+		this.isClient = isClient;
+		this.isServer = isServer;
 		zoom = 1;
 		sprites = new LinkedBlockingQueue<Sprite>();
 		batch = game.getSpriteBatch();
@@ -259,7 +266,7 @@ public class GameState extends State {
 
 	private void createPlayer() {
 		
-		player = new Player(new Bird(new Vector2(Constants.X_START, middle), world, true), "Player", 12345L, this);
+		player = new Player(new Bird(new Vector2(Constants.X_START, middle), world, true, IDGenerator.getNewID()), "Player", this);
 		
 	}
 
@@ -283,12 +290,29 @@ public class GameState extends State {
 
 	@Override
 	public void update(float dt) {
+		
+		if(isClient)
+			syncSpriteList();
+		
 		handleInput();
 
 		for(Sprite sprite : sprites)
 			sprite.update(dt);
 
 		world.step(dt, 6, 2);
+		
+		if(isClient)
+			updateSpriteList();
+	}
+
+	private void updateSpriteList() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void syncSpriteList() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

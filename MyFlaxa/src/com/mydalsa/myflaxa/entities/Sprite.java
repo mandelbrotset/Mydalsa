@@ -22,7 +22,9 @@ public abstract class Sprite {
 	public long getId() {
 		return id;
 	}
-	
+	public Body getBody() {
+		return body;
+	}
 	public void update(float dt) {
 		animation.update(dt);
 	}

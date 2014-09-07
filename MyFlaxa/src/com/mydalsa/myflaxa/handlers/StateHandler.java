@@ -42,7 +42,7 @@ public class StateHandler {
 	public State getState(int state) {
 		switch (state) {
 		case 1:
-			return new GameState(game);
+			return new GameState(game, true, false);
 		}
 		return null;
 	}
