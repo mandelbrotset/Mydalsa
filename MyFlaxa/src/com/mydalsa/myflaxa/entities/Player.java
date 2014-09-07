@@ -8,12 +8,10 @@ import com.mydalsa.myflaxa.states.GameState;
 public class Player {
 	private Bird bird;
 	private String name;
-	private long id;
 	
-	public Player(Bird bird, String name, long id, GameState state){
+	public Player(Bird bird, String name, GameState state){
 		this.bird = bird;
 		this.name = name;
-		this.id = id;
 		state.addSprite(bird);
 	}
 	
@@ -30,10 +28,6 @@ public class Player {
 	
 	public Vector2 getPosition(){
 		return bird.getPosition();
-	}
-	
-	public long getId() {
-		return id;
 	}
 	
 	public String getName() {

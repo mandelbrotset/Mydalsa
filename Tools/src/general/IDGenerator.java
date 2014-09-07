@@ -1,5 +1,4 @@
 package general;
-
 public class IDGenerator {
 	private static int id;
 	

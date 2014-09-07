@@ -3,6 +3,7 @@ package com.mydalsa.myflaxa.handlers;
 import java.util.Stack;
 
 import com.mydalsa.myflaxa.MyFlaxaGame;
+import com.mydalsa.myflaxa.multiplayer.client.Client;
 import com.mydalsa.myflaxa.states.GameState;
 import com.mydalsa.myflaxa.states.State;
 
@@ -42,7 +43,7 @@ public class StateHandler {
 	public State getState(int state) {
 		switch (state) {
 		case 1:
-			return new GameState(game);
+			return new GameState(game, new Client());
 		}
 		return null;
 	}

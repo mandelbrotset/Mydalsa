@@ -13,20 +13,18 @@ public abstract class Sprite {
 	protected float width;
 	protected float height;
 	protected Animation animation;
-	protected boolean locked;
-	
-	public Sprite(boolean initiallyLocked){
-		locked = initiallyLocked;
+	private long id;
+	public Sprite(long id){
 		animation = new Animation();
+		this.id = id;
 	}
-	
-	public boolean isLocked(){
-		return locked;
+
+	public long getId() {
+		return id;
 	}
-	public void unLock(){
-		locked = false;
+	public Body getBody() {
+		return body;
 	}
-	
 	public void update(float dt) {
 		animation.update(dt);
 	}
