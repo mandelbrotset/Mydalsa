@@ -1,5 +1,8 @@
 package com.mydalsa.myflaxa;
 
+import tcp.client.TCPClient;
+import tcp.server.TCPClientHolder;
+import tcp.server.TCPServer;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -7,6 +10,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mydalsa.myflaxa.handlers.Content;
 import com.mydalsa.myflaxa.handlers.StateHandler;
+import com.mydalsa.myflaxa.multiplayer.MultiplayerHandler;
+import com.mydalsa.myflaxa.multiplayer.PackageReceiverImpl;
 
 public class MyFlaxaGame extends ApplicationAdapter {
 	
@@ -24,7 +29,11 @@ public class MyFlaxaGame extends ApplicationAdapter {
 
 	public static final float STEP = 1 / 60f;
 	
-	
+	private void startMultiplayer(boolean server) {
+		
+		MultiplayerHandler mh = new MultiplayerHandler(server);
+		
+	}
 	
 	@Override
 	public void create () {
@@ -38,7 +47,7 @@ public class MyFlaxaGame extends ApplicationAdapter {
 		cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 		hudCam = new OrthographicCamera();
 		hudCam.setToOrtho(false, V_WIDTH, V_HEIGHT);
-		
+		startMultiplayer(true);
 		stateHandler = new StateHandler(this);
 
 	}

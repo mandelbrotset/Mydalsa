@@ -16,12 +16,18 @@ public class TCPClientHolder extends ClientHolder<Object> {
 	private Socket socket;
 	private ObjectOutputStream outputStream;
 	private ObjectInputStream inputStream;
+	private int id;
 	
 	public TCPClientHolder(Socket socket, PacketReceiver<Object> objectReceiver) throws IOException {
+		id = general.IDGenerator.getNewID();
 		this.socket = socket;
 		this.objectReceiver = objectReceiver;
 		createInputStream();
 		createOutputStream();
+	}
+	
+	public int getID() {
+		return id;
 	}
 	
 	public String getClientName() {
